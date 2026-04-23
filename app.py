@@ -7,10 +7,10 @@ import streamlit as st
 import base64
 import textwrap
 
-def get_b64(filename: str) -> str:
+def get_b64(filename: str, folder: str = "assets") -> str:
     try:
         base_dir = Path(__file__).resolve().parent
-        filepath = base_dir / filename
+        filepath = base_dir / folder / filename
         with open(filepath, "rb") as f:
             raw_b64 = base64.b64encode(f.read()).decode("utf-8")
             return "\n".join(textwrap.wrap(raw_b64, 76))
@@ -19,7 +19,7 @@ def get_b64(filename: str) -> str:
 
 st.set_page_config(
     page_title="HeartPulse",
-    page_icon="favicon.svg",
+    page_icon="assets/favicon.svg",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -27,8 +27,8 @@ st.set_page_config(
 # Override browser tab title to remove "- Streamlit" suffix
 st.markdown('<script>document.title="HeartPulse";</script>', unsafe_allow_html=True)
 
-MODEL_PATH = Path(__file__).resolve().parent / "heart_disease_pipeline.pkl"
-DATA_PATH = Path(__file__).resolve().parent / "heart.csv"
+MODEL_PATH = Path(__file__).resolve().parent / "models" / "heart_disease_pipeline.pkl"
+DATA_PATH = Path(__file__).resolve().parent / "data" / "heart.csv"
 
 FEATURES = [
     "ca",
@@ -989,8 +989,8 @@ def render_home(model, feature_order: List[str], defaults: Dict) -> None:
             confidence = result["confidence"] if result["confidence"] is not None else 0.78
 
         is_high = pred == 1
-        warn_img = f'<img src="data:image/svg+xml;base64,{get_b64("warn_triangle.svg")}" style="width:22px;height:22px;" alt="warning"/>'
-        warn_img_sm = f'<img src="data:image/svg+xml;base64,{get_b64("warn_triangle.svg")}" style="width:16px;height:16px;vertical-align:-2px;" alt="warning"/>'
+        warn_img = f'<img src="data:image/svg+xml;base64,{get_b64('warn_triangle.svg')}" style="width:22px;height:22px;" alt="warning"/>'
+        warn_img_sm = f'<img src="data:image/svg+xml;base64,{get_b64('warn_triangle.svg')}" style="width:16px;height:16px;vertical-align:-2px;" alt="warning"/>'
         status_text = f"{warn_img}<br/>High Risk" if is_high else "✅<br/>Low Risk"
         risk_value = max(0.0, min(1.0, prob_pos if prob_pos is not None else confidence))
 
