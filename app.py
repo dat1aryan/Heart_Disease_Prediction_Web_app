@@ -227,15 +227,16 @@ html, body, [data-testid="stAppViewContainer"], .stApp {
     margin-bottom: 24px;
 }
 
+/* Target the main content blocks to render as cards */
 .card,
-[data-testid="column"]:has(.form-title),
-[data-testid="column"]:has(.result-title) {
+[data-testid="column"] > div > [data-testid="stVerticalBlock"]:has(.form-title),
+[data-testid="column"] > div > [data-testid="stVerticalBlock"]:has(.result-title) {
     background: var(--surface);
     border: 1px solid var(--line);
     border-radius: 16px;
     padding: 20px;
     box-shadow: var(--shadow);
-    transition: transform 180ms ease, box-shadow 180ms ease;
+    margin-bottom: 24px;
 }
 
 .card:hover {
