@@ -738,8 +738,16 @@ def render_hero() -> None:
                         <path d="M108 88H131L137 74L145 100L153 58L162 110L172 88H208" stroke="#e63946" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                     
-                    <!-- 3D Generated Heart -->
-                    <img src="https://raw.githubusercontent.com/dat1aryan/Heart_Disease_Prediction_Web_app/main/hero_heart.png" style="position: relative; z-index: 2; width: 100%; max-width: 250px; filter: drop-shadow(0 15px 30px rgba(230,57,70,0.3));" alt="HeartPulse Hero Image"/>
+                    <!-- Premium SVG Lucide Heart -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 24 24" fill="url(#heroGrad)" stroke="none" style="filter: drop-shadow(0 15px 30px rgba(230,57,70,0.4)); position: relative; z-index: 2;">
+                        <defs>
+                            <linearGradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#ff6b81" />
+                                <stop offset="100%" stop-color="#e63946" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+                    </svg>
                 </div>
             </div>
         </div>
