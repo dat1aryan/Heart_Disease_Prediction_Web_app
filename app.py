@@ -4,6 +4,7 @@ from typing import Dict, List, Optional
 import joblib
 import pandas as pd
 import streamlit as st
+from sklearn.ensemble import RandomForestClassifier
 
 
 st.set_page_config(
@@ -276,15 +277,39 @@ def inject_styles() -> None:
 
 
 @st.cache_resource(show_spinner=False)
-def load_pipeline(path: Path):
-    payload = joblib.load(path)
-    if isinstance(payload, dict) and "model" in payload:
-        model = payload["model"]
-        feature_order = payload.get("features") or FALLBACK_FEATURES
-    else:
-        model = payload
-        feature_order = list(getattr(model, "feature_names_in_", FALLBACK_FEATURES))
+def build_fallback_model(data_path: Path):
+    df = pd.read_csv(data_path)
+    if "target" not in df.columns:
+        raise ValueError("heart.csv must contain a target column")
+
+    feature_order = [col for col in FALLBACK_FEATURES if col in df.columns]
+    if not feature_order:
+        feature_order = [col for col in df.columns if col != "target"]
+
+    X = df[feature_order]
+    y = df["target"]
+
+    model = RandomForestClassifier(n_estimators=300, random_state=42)
+    model.fit(X, y)
     return model, feature_order
+
+
+@st.cache_resource(show_spinner=False)
+def load_pipeline(path: Path, data_path: Path):
+    try:
+        payload = joblib.load(path)
+        if isinstance(payload, dict) and "model" in payload:
+            model = payload["model"]
+            feature_order = payload.get("features") or FALLBACK_FEATURES
+        else:
+            model = payload
+            feature_order = list(getattr(model, "feature_names_in_", FALLBACK_FEATURES))
+        return model, feature_order, "pickle"
+    except Exception:
+        if not data_path.exists():
+            raise
+        model, feature_order = build_fallback_model(data_path)
+        return model, feature_order, "fallback"
 
 
 @st.cache_data(show_spinner=False)
@@ -406,11 +431,11 @@ with st.sidebar:
     st.caption("Exang: 0 No, 1 Yes")
     st.caption("cp: 0-3, thal: 0-3, slope: 0-2, restecg: 0-2")
 
-if not MODEL_PATH.exists():
-    st.error("Model file not found. Place heart_disease_pipeline.pkl in this folder.")
+if not MODEL_PATH.exists() and not DATA_PATH.exists():
+    st.error("Neither model file nor heart.csv was found. Add at least one of them to run the app.")
     st.stop()
 
-model, feature_order = load_pipeline(MODEL_PATH)
+model, feature_order, model_source = load_pipeline(MODEL_PATH, DATA_PATH)
 profile = load_data_profile(DATA_PATH)
 defaults = defaults_from_profile(profile)
 
@@ -420,7 +445,11 @@ if "result" not in st.session_state:
     st.session_state.result = None
 
 with st.sidebar:
-    st.success("Model ready")
+    if model_source == "pickle":
+        st.success("Model ready (loaded from pickle)")
+    else:
+        st.warning("Using fallback model trained from heart.csv")
+
     if st.button("Reset form", use_container_width=True):
         st.session_state.form_values = defaults.copy()
         st.session_state.result = None
