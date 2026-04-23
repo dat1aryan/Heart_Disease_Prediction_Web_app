@@ -24,6 +24,9 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+# Override browser tab title to remove "- Streamlit" suffix
+st.markdown('<script>document.title="HeartPulse";</script>', unsafe_allow_html=True)
+
 MODEL_PATH = Path(__file__).resolve().parent / "heart_disease_pipeline.pkl"
 DATA_PATH = Path(__file__).resolve().parent / "heart.csv"
 
