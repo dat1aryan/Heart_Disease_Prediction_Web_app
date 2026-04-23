@@ -100,6 +100,12 @@ CUSTOM_CSS = """
     --shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
 }
 
+@keyframes pulseHeart {
+    0% { transform: scale(0.98); opacity: 0.85; filter: drop-shadow(0 10px 20px rgba(230,57,70,0.2)); }
+    50% { transform: scale(1.02); opacity: 1; filter: drop-shadow(0 20px 40px rgba(230,57,70,0.5)); }
+    100% { transform: scale(0.98); opacity: 0.85; filter: drop-shadow(0 10px 20px rgba(230,57,70,0.2)); }
+}
+
 html, body, [data-testid="stAppViewContainer"], .stApp {
     font-family: "Plus Jakarta Sans", "Inter", "Helvetica Neue", sans-serif !important;
     background: var(--bg) !important;
@@ -747,8 +753,8 @@ def render_hero() -> None:
                 <path d="M12 88H45L52 72L59 102L67 60L76 98H108" stroke="#e63946" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M108 88H131L137 74L145 100L153 58L162 110L172 88H208" stroke="#e63946" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            <!-- 3D Generated Heart -->
-            <img src="data:image/png;base64,{get_b64('hero_heart.png')}" style="position: relative; z-index: 2; width: 100%; max-width: 250px; filter: drop-shadow(0 15px 30px rgba(230,57,70,0.3));" alt="HeartPulse Hero Image"/>
+            <!-- 3D Generated Heart with Smooth Edge Fade and Pulse Animation -->
+            <img src="data:image/png;base64,{get_b64('hero_heart.png')}" style="position: relative; z-index: 2; width: 100%; max-width: 250px; filter: drop-shadow(0 15px 30px rgba(230,57,70,0.3)); -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 80%); mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 80%); animation: pulseHeart 4s infinite ease-in-out;" alt="HeartPulse Hero Image"/>
         </div>
     </div>
 </div>
