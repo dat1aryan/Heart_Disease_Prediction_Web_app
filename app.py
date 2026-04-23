@@ -4,6 +4,14 @@ from typing import Dict, List, Optional, Tuple
 import joblib
 import pandas as pd
 import streamlit as st
+import base64
+
+def get_b64(path: str) -> str:
+    try:
+        with open(path, "rb") as f:
+            return base64.b64encode(f.read()).decode("utf-8")
+    except Exception:
+        return ""
 
 st.set_page_config(
     page_title="HeartPulse - AI Heart Risk Predictor",
@@ -702,13 +710,13 @@ def render_sidebar() -> str:
                         <svg style="position: absolute; bottom: -8px; right: -8px; width: 12px; height: 12px; color: #ff4757;" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5L12 0Z"/>
                         </svg>
-                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" style="width:100%; height:100%; filter: drop-shadow(0 4px 8px rgba(230,57,70,0.3));" />
+                        <img src="data:image/png;base64,{get_b64('apple_heart.png')}" style="width:100%; height:100%; filter: drop-shadow(0 4px 8px rgba(230,57,70,0.3));" />
                     </div>
                 </div>
                 <div class="sidebar-card-title" style="text-align: center;">Your heart, our priority.</div>
                 <div class="sidebar-card-copy" style="text-align: center;">Take control of your health with AI-powered insights.</div>
             </div>
-            <div class="sidebar-footer">© 2026 HeartPulse <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" style="width:0.95em; height:0.95em; vertical-align:-0.1em; filter:drop-shadow(0 2px 3px rgba(230,57,70,0.25));" alt="iOS Heart"/><br/>All rights reserved.</div>
+            <div class="sidebar-footer">© 2026 HeartPulse <img src="data:image/png;base64,{get_b64('footer_heart.png')}" style="width:0.95em; height:0.95em; vertical-align:-0.1em; filter:drop-shadow(0 2px 3px rgba(230,57,70,0.25));" alt="iOS Heart"/><br/>All rights reserved.</div>
             """,
             unsafe_allow_html=True,
         )
@@ -738,7 +746,7 @@ def render_hero() -> None:
                     </svg>
                     
                     <!-- 3D Generated Heart -->
-                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" style="position: relative; z-index: 2; width: 100%; max-width: 250px; filter: drop-shadow(0 15px 30px rgba(230,57,70,0.3));" alt="HeartPulse Hero Image"/>
+                    <img src="data:image/png;base64,{get_b64('hero_heart.png')}" style="position: relative; z-index: 2; width: 100%; max-width: 250px; filter: drop-shadow(0 15px 30px rgba(230,57,70,0.3));" alt="HeartPulse Hero Image"/>
                 </div>
             </div>
         </div>
