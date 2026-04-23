@@ -5,13 +5,15 @@ import joblib
 import pandas as pd
 import streamlit as st
 import base64
+import textwrap
 
 def get_b64(filename: str) -> str:
     try:
         base_dir = Path(__file__).resolve().parent
         filepath = base_dir / filename
         with open(filepath, "rb") as f:
-            return base64.b64encode(f.read()).decode("utf-8")
+            raw_b64 = base64.b64encode(f.read()).decode("utf-8")
+            return "\n".join(textwrap.wrap(raw_b64, 76))
     except Exception:
         return ""
 
