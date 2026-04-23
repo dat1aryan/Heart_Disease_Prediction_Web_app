@@ -4,18 +4,6 @@ from typing import Dict, List, Optional, Tuple
 import joblib
 import pandas as pd
 import streamlit as st
-import base64
-import textwrap
-
-def get_b64(filename: str) -> str:
-    try:
-        base_dir = Path(__file__).resolve().parent
-        filepath = base_dir / filename
-        with open(filepath, "rb") as f:
-            raw_b64 = base64.b64encode(f.read()).decode("utf-8")
-            return "\n".join(textwrap.wrap(raw_b64, 76))
-    except Exception:
-        return ""
 
 st.set_page_config(
     page_title="HeartPulse - AI Heart Risk Predictor",
@@ -714,13 +702,13 @@ def render_sidebar() -> str:
                         <svg style="position: absolute; bottom: -8px; right: -8px; width: 12px; height: 12px; color: #ff4757;" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5L12 0Z"/>
                         </svg>
-                        <img src="data:image/png;base64,{get_b64('apple_heart.png')}" style="width:100%; height:100%; filter: drop-shadow(0 4px 8px rgba(230,57,70,0.3));" />
+                        <div style="font-size: 52px; line-height: 1; text-align: center; text-shadow: 0 8px 16px rgba(230,57,70,0.3);">❤️</div>
                     </div>
                 </div>
                 <div class="sidebar-card-title" style="text-align: center;">Your heart, our priority.</div>
                 <div class="sidebar-card-copy" style="text-align: center;">Take control of your health with AI-powered insights.</div>
             </div>
-            <div class="sidebar-footer">© 2026 HeartPulse <img src="data:image/png;base64,{get_b64('footer_heart.png')}" style="width:0.95em; height:0.95em; vertical-align:-0.1em; filter:drop-shadow(0 2px 3px rgba(230,57,70,0.25));" alt="iOS Heart"/><br/>All rights reserved.</div>
+            <div class="sidebar-footer">© 2026 HeartPulse <span style="font-size: 0.95em; vertical-align: -0.1em; text-shadow: 0 2px 4px rgba(230,57,70,0.25);">❤️</span><br/>All rights reserved.</div>
             """,
             unsafe_allow_html=True,
         )
@@ -734,7 +722,7 @@ def render_hero() -> None:
             <div class="hero-grid">
                 <div>
                     <div class="hero-brand-row">
-                        <h1 class="hero-title">HeartPulse <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" style="width:0.95em; height:0.95em; vertical-align:-0.1em; filter:drop-shadow(0 2px 3px rgba(230,57,70,0.25));" alt="iOS Heart"/></h1>
+                        <h1 class="hero-title">HeartPulse <span style="font-size: 0.85em; vertical-align: -0.05em; text-shadow: 0 4px 8px rgba(230,57,70,0.25);">❤️</span></h1>
                     </div>
                     <div class="hero-subtitle">AI-Powered Heart Disease Risk Prediction</div>
                     <div class="hero-copy">Get insights about your heart health based on clinical factors using advanced machine learning.</div>
@@ -749,8 +737,10 @@ def render_hero() -> None:
                         <path d="M108 88H131L137 74L145 100L153 58L162 110L172 88H208" stroke="#e63946" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                     
-                    <!-- 3D Generated Heart -->
-                    <img src="data:image/png;base64,{get_b64('hero_heart.png')}" style="position: relative; z-index: 2; width: 100%; max-width: 250px; filter: drop-shadow(0 15px 30px rgba(230,57,70,0.3));" alt="HeartPulse Hero Image"/>
+                    <!-- CSS Styled Emoji Heart -->
+                    <div style="font-size: 160px; line-height: 1; position: relative; z-index: 2; text-shadow: 0 20px 40px rgba(230,57,70,0.35);">
+                        ❤️
+                    </div>
                 </div>
             </div>
         </div>
