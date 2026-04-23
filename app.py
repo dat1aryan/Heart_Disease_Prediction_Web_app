@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Dict, List, Optional
 
 import joblib
 import pandas as pd
@@ -303,7 +304,7 @@ def load_data_profile(path: Path):
     return profile
 
 
-def defaults_from_profile(profile: dict) -> dict:
+def defaults_from_profile(profile: Dict) -> Dict:
     def v(name: str, fallback: float):
         return profile.get(name, {}).get("median", fallback)
 
@@ -322,7 +323,7 @@ def defaults_from_profile(profile: dict) -> dict:
     }
 
 
-def validate(values: dict) -> list[str]:
+def validate(values: Dict) -> List[str]:
     issues = []
     if not 18 <= values["age"] <= 100:
         issues.append("Age should be between 18 and 100")
@@ -335,7 +336,7 @@ def validate(values: dict) -> list[str]:
     return issues
 
 
-def build_input_frame(values: dict, feature_order: list[str]) -> pd.DataFrame:
+def build_input_frame(values: Dict, feature_order: List[str]) -> pd.DataFrame:
     row = {k: values[k] for k in feature_order}
     return pd.DataFrame([row], columns=feature_order)
 
@@ -351,7 +352,7 @@ def infer(model, frame: pd.DataFrame):
     return pred, confidence, prob_pos
 
 
-def show_result(pred: int, confidence: float | None, prob_pos: float | None):
+def show_result(pred: int, confidence: Optional[float], prob_pos: Optional[float]):
     is_high = pred == 1
     pill_class = "high" if is_high else "low"
     status = "High Risk" if is_high else "Low Risk"
