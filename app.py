@@ -19,7 +19,7 @@ def get_b64(filename: str) -> str:
 
 st.set_page_config(
     page_title="HeartPulse - AI Heart Risk Predictor",
-    page_icon="HP",
+    page_icon="❤️",
     layout="wide",
     initial_sidebar_state="expanded",
 )
