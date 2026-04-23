@@ -227,6 +227,30 @@ html, body, [data-testid="stAppViewContainer"], .stApp {
     margin-bottom: 24px;
 }
 
+/* Button SVG icons via pseudo-elements */
+button[data-testid="stBaseButton-primary"] p::before {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    vertical-align: -2px;
+    background: white;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") no-repeat center / contain;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+button[data-testid="stBaseButton-secondary"] p::before {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    vertical-align: -2px;
+    background: var(--text);
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='1 4 1 10 7 10'/%3E%3Cpath d='M3.51 15a9 9 0 1 0 2.13-9.36L1 10'/%3E%3C/svg%3E") no-repeat center / contain;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='1 4 1 10 7 10'/%3E%3Cpath d='M3.51 15a9 9 0 1 0 2.13-9.36L1 10'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+
 /* Robust Card Targeting Engine */
 [data-testid="column"]:has(.form-title-marker),
 [data-testid="column"]:has(.result-title-marker),
@@ -846,9 +870,9 @@ def render_home(model, feature_order: List[str], defaults: Dict) -> None:
 
         btn_left, btn_right = st.columns(2, gap="medium")
         with btn_left:
-            predict_clicked = st.button("🔍 Predict Risk", type="primary", use_container_width=True, disabled=bool(errors))
+            predict_clicked = st.button("Predict Risk", type="primary", use_container_width=True, disabled=bool(errors))
         with btn_right:
-            if st.button("🔄 Reset All", use_container_width=True):
+            if st.button("Reset All", use_container_width=True):
                 st.session_state.form_values = defaults.copy()
                 st.session_state.result = None
                 st.rerun()
