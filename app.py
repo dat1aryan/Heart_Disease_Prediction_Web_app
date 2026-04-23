@@ -123,7 +123,7 @@ html, body, [data-testid="stAppViewContainer"], .stApp {
 }
 
 [data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
-    padding: 12px 16px !important;
+    padding: 16px 18px !important;
 }
 
 .sidebar-brand {
@@ -131,7 +131,7 @@ html, body, [data-testid="stAppViewContainer"], .stApp {
     font-size: 22px;
     font-weight: 700;
     line-height: 1.2;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -139,7 +139,7 @@ html, body, [data-testid="stAppViewContainer"], .stApp {
 }
 
 .sidebar-card {
-    margin-top: 12px;
+    margin-top: 20px;
     border-radius: 14px;
     border: 1px solid rgba(230, 57, 70, 0.14);
     background: #fff5f6;
@@ -166,14 +166,14 @@ html, body, [data-testid="stAppViewContainer"], .stApp {
 }
 
 [data-testid="stSidebar"] .stRadio > div {
-    gap: 4px;
+    gap: 6px;
 }
 
 [data-testid="stSidebar"] .stRadio label {
     background: transparent;
     border: 1px solid transparent;
     border-radius: 10px;
-    padding: 10px 14px;
+    padding: 11px 14px;
     margin: 0 !important;
 }
 
