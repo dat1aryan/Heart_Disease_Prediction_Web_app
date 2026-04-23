@@ -702,13 +702,17 @@ def render_sidebar() -> str:
                         <svg style="position: absolute; bottom: -8px; right: -8px; width: 12px; height: 12px; color: #ff4757;" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5L12 0Z"/>
                         </svg>
-                        <div style="font-size: 52px; line-height: 1; text-align: center; text-shadow: 0 8px 16px rgba(230,57,70,0.3);">❤️</div>
+                        <div style="text-align: center;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="52" height="52" viewBox="0 0 24 24" fill="url(#heroGrad)" stroke="none" style="filter: drop-shadow(0 8px 16px rgba(230,57,70,0.3));">
+                                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+                            </svg>
+                        </div>
                     </div>
                 </div>
                 <div class="sidebar-card-title" style="text-align: center;">Your heart, our priority.</div>
                 <div class="sidebar-card-copy" style="text-align: center;">Take control of your health with AI-powered insights.</div>
             </div>
-            <div class="sidebar-footer">© 2026 HeartPulse <span style="font-size: 0.95em; vertical-align: -0.1em; text-shadow: 0 2px 4px rgba(230,57,70,0.25);">❤️</span><br/>All rights reserved.</div>
+            <div class="sidebar-footer">© 2026 HeartPulse <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#e63946" stroke="none" style="vertical-align: -0.15em; filter:drop-shadow(0 2px 3px rgba(230,57,70,0.25));"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg><br/>All rights reserved.</div>
             """,
             unsafe_allow_html=True,
         )
@@ -722,7 +726,7 @@ def render_hero() -> None:
             <div class="hero-grid">
                 <div>
                     <div class="hero-brand-row">
-                        <h1 class="hero-title">HeartPulse <span style="font-size: 0.85em; vertical-align: -0.05em; text-shadow: 0 4px 8px rgba(230,57,70,0.25);">❤️</span></h1>
+                        <h1 class="hero-title">HeartPulse <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="#e63946" stroke="none" style="vertical-align: -0.1em; filter:drop-shadow(0 4px 8px rgba(230,57,70,0.25));"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></h1>
                     </div>
                     <div class="hero-subtitle">AI-Powered Heart Disease Risk Prediction</div>
                     <div class="hero-copy">Get insights about your heart health based on clinical factors using advanced machine learning.</div>
@@ -737,10 +741,16 @@ def render_hero() -> None:
                         <path d="M108 88H131L137 74L145 100L153 58L162 110L172 88H208" stroke="#e63946" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                     
-                    <!-- CSS Styled Emoji Heart -->
-                    <div style="font-size: 160px; line-height: 1; position: relative; z-index: 2; text-shadow: 0 20px 40px rgba(230,57,70,0.35);">
-                        ❤️
-                    </div>
+                    <!-- Premium SVG Lucide Heart -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 24 24" fill="url(#heroGrad)" stroke="none" style="filter: drop-shadow(0 15px 30px rgba(230,57,70,0.4)); position: relative; z-index: 2;">
+                        <defs>
+                            <linearGradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#ff6b81" />
+                                <stop offset="100%" stop-color="#e63946" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+                    </svg>
                 </div>
             </div>
         </div>
