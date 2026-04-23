@@ -61,6 +61,11 @@ ICON_PATHS = {
     "circle": '<circle cx="12" cy="12" r="10"/>',
     "shield-check": '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>',
     "pill": '<path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/>',
+    "cpu": '<rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="15" x2="23" y2="15"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="15" x2="4" y2="15"/>',
+    "database": '<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>',
+    "list": '<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>',
+    "award": '<circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>',
+    "check-circle": '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>',
 }
 
 
@@ -590,9 +595,20 @@ button[data-testid="stBaseButton-secondary"] p::before {
     background: #ffffff;
     border: 1px solid var(--line);
     border-radius: 12px;
-    padding: 16px;
+    padding: 18px;
     text-align: center;
     box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.about-stat-card svg {
+    margin-bottom: 8px;
+    color: var(--red);
+    opacity: 0.8;
+    margin-right: 0 !important;
 }
 
 .stat-value {
@@ -1050,14 +1066,17 @@ def render_about(model, feature_order: List[str], dataset_meta: Dict, metrics: D
     st.markdown(f"""
         <div class="about-stats-grid">
             <div class="about-stat-card">
+                {icon_svg("cpu", 24)}
                 <span class="stat-value">{model_name}</span>
                 <span class="stat-label">Model Engine</span>
             </div>
             <div class="about-stat-card">
+                {icon_svg("database", 24)}
                 <span class="stat-value">{dataset_meta['rows']}</span>
                 <span class="stat-label">Dataset Records</span>
             </div>
             <div class="about-stat-card">
+                {icon_svg("list", 24)}
                 <span class="stat-value">{len(feature_order)}</span>
                 <span class="stat-label">Input Features</span>
             </div>
