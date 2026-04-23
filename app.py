@@ -535,15 +535,22 @@ button[data-testid="stBaseButton-secondary"] p::before {
 .step-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
+    gap: 24px;
+    margin-top: 20px;
 }
 
 .step-card {
     background: #ffffff;
     border: 1px solid var(--line);
     border-radius: 14px;
-    padding: 16px;
+    padding: 24px;
     box-shadow: var(--shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.step-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.1);
 }
 
 .step-number {
@@ -1010,21 +1017,18 @@ def render_how_it_works() -> None:
     st.markdown('<div class="card page-section">', unsafe_allow_html=True)
     st.markdown('<div class="form-title">How It Works</div>', unsafe_allow_html=True)
     st.markdown('<div class="step-grid">', unsafe_allow_html=True)
-
-    cols = st.columns(2, gap="medium")
-    for idx, (num, title, copy) in enumerate(steps):
-        with cols[idx % 2]:
-            st.markdown(
-                f"""
-                <div class="step-card">
-                    <div class="step-number">{num}</div>
-                    <div class="step-title">{title}</div>
-                    <div class="step-copy">{copy}</div>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
-
+    
+    cards_html = ""
+    for num, title, copy in steps:
+        cards_html += f"""
+        <div class="step-card">
+            <div class="step-number">{num}</div>
+            <div class="step-title">{title}</div>
+            <div class="step-copy">{copy}</div>
+        </div>
+        """
+    
+    st.markdown(cards_html, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
