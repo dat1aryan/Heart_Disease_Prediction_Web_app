@@ -100,12 +100,18 @@ CUSTOM_CSS = """
     --shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
 }
 
-/* Override Streamlit progress bar color to match red theme */
-[data-testid="stProgress"] > div > div > div {
-    background-color: var(--red) !important;
+/* Override Streamlit progress bar: fill = red, track = white */
+.stProgress > div > div > div,
+.stProgress div[role="progressbar"] > div,
+[data-testid="stProgress"] div[role="progressbar"] > div,
+[data-testid="stProgressBar"] > div {
+    background-color: #e63946 !important;
     background-image: linear-gradient(90deg, #ff6b76, #e63946) !important;
 }
-[data-testid="stProgress"] > div > div {
+.stProgress > div > div,
+.stProgress div[role="progressbar"],
+[data-testid="stProgress"] div[role="progressbar"],
+[data-testid="stProgressBar"] {
     background-color: #ffffff !important;
 }
 
