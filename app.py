@@ -100,10 +100,10 @@ CUSTOM_CSS = """
     --shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
 }
 
-/* Progress bar track: light gray so empty portion shows */
+/* Progress bar track: off-white so empty portion shows */
 .stProgress > div,
 [data-testid="stProgress"] > div {
-    background-color: #e9ecef !important;
+    background-color: #f0f0f0 !important;
     border-radius: 8px !important;
 }
 
