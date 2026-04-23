@@ -579,16 +579,79 @@ button[data-testid="stBaseButton-secondary"] p::before {
     line-height: 1.5;
 }
 
-.about-list {
-    margin: 0;
-    padding-left: 18px;
-    color: var(--text);
+.about-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
 }
 
-.about-list li {
-    margin-bottom: 8px;
+.about-stat-card {
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+
+.stat-value {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--red);
+    display: block;
+}
+
+.stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 4px;
+    font-weight: 700;
+}
+
+.feature-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.feature-pill {
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: 99px;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 600;
     color: var(--text);
-    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+}
+
+.feature-pill svg {
+    color: var(--red);
+}
+
+.about-performance-wrap {
+    background: var(--red-soft);
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 24px;
+    border: 1px solid rgba(230, 57, 70, 0.1);
+}
+
+.about-performance-title {
+    color: var(--red);
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .muted {
@@ -983,26 +1046,50 @@ def render_about(model, feature_order: List[str], dataset_meta: Dict, metrics: D
     st.markdown('<div class="card page-section">', unsafe_allow_html=True)
     st.markdown('<div class="form-title">About Model</div>', unsafe_allow_html=True)
 
-    st.markdown(f"<p class='muted'><strong>Model type:</strong> {model_name}</p>", unsafe_allow_html=True)
-    st.markdown(
-        f"<p class='muted'><strong>Dataset used:</strong> Heart disease clinical dataset ({dataset_meta['rows']} rows, {dataset_meta['cols']} columns).</p>",
-        unsafe_allow_html=True,
-    )
+    # Key stats grid
+    st.markdown(f"""
+        <div class="about-stats-grid">
+            <div class="about-stat-card">
+                <span class="stat-value">{model_name}</span>
+                <span class="stat-label">Model Engine</span>
+            </div>
+            <div class="about-stat-card">
+                <span class="stat-value">{dataset_meta['rows']}</span>
+                <span class="stat-label">Dataset Records</span>
+            </div>
+            <div class="about-stat-card">
+                <span class="stat-value">{len(feature_order)}</span>
+                <span class="stat-label">Input Features</span>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
 
-    st.markdown("<p class='muted'><strong>Features used:</strong></p>", unsafe_allow_html=True)
-    st.markdown("<ul class='about-list'>" + "".join([f"<li>{f}</li>" for f in feature_order]) + "</ul>", unsafe_allow_html=True)
+    # Features Pill Cloud
+    st.markdown("<div style='font-size: 14px; font-weight: 700; color: var(--text); margin-top: 10px;'>Input Features</div>", unsafe_allow_html=True)
+    pills_html = '<div class="feature-pills">'
+    for feat in feature_order:
+        pills_html += f'<div class="feature-pill">{icon_svg("check-circle", 14)} {feat}</div>'
+    pills_html += '</div>'
+    st.markdown(pills_html, unsafe_allow_html=True)
 
+    # Performance Section
     if test_acc is not None or cv_acc is not None:
-        perf_parts = []
+        perf_text = ""
         if test_acc is not None:
-            perf_parts.append(f"Test accuracy: {float(test_acc) * 100:.1f}%")
+            perf_text += f"Test Accuracy: <strong>{float(test_acc) * 100:.1f}%</strong>"
         if cv_acc is not None:
-            perf_parts.append(f"Cross-validation accuracy: {float(cv_acc) * 100:.1f}%")
-        perf_text = " | ".join(perf_parts)
+            if perf_text: perf_text += " &nbsp;&bull;&nbsp; "
+            perf_text += f"CV Accuracy: <strong>{float(cv_acc) * 100:.1f}%</strong>"
     else:
         perf_text = "Training notebook reported approximately 89% holdout accuracy and around 82% cross-validation accuracy."
 
-    st.markdown(f"<p class='muted'><strong>Performance:</strong> {perf_text}</p>", unsafe_allow_html=True)
+    st.markdown(f"""
+        <div class="about-performance-wrap">
+            <div class="about-performance-title">{icon_svg("award", 18)} Model Performance Recognition</div>
+            <div class="muted">{perf_text}</div>
+        </div>
+    """, unsafe_allow_html=True)
+
     st.markdown('</div>', unsafe_allow_html=True)
 
 
