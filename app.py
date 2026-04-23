@@ -6,9 +6,11 @@ import pandas as pd
 import streamlit as st
 import base64
 
-def get_b64(path: str) -> str:
+def get_b64(filename: str) -> str:
     try:
-        with open(path, "rb") as f:
+        base_dir = Path(__file__).resolve().parent
+        filepath = base_dir / filename
+        with open(filepath, "rb") as f:
             return base64.b64encode(f.read()).decode("utf-8")
     except Exception:
         return ""
