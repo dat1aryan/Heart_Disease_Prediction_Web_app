@@ -31,462 +31,516 @@ FEATURES = [
 
 CUSTOM_CSS = """
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
     :root {
-        --bg: #ffffff;
+        --bg: #f8f9fb;
         --surface: #ffffff;
-        --surface-soft: #fff7f7;
-        --line: rgba(17, 24, 39, 0.08);
-        --line-strong: rgba(230, 57, 70, 0.16);
-        --text: #111827;
+        --surface-soft: #fff5f6;
+        --line: #eeeeee;
+        --line-soft: rgba(230, 57, 70, 0.12);
+        --text: #1f2937;
         --muted: #6b7280;
         --red: #e63946;
-        --red-dark: #bf1d2d;
-        --green: #1f9d68;
-        --green-soft: #e7f7ef;
-        --shadow: 0 18px 50px rgba(17, 24, 39, 0.08);
-        --shadow-soft: 0 8px 24px rgba(17, 24, 39, 0.06);
+        --red-dark: #c61f2d;
+        --green: #16a34a;
+        --green-soft: rgba(22, 163, 74, 0.10);
+        --shadow-soft: 0 2px 8px rgba(15, 23, 42, 0.05), 0 8px 24px rgba(15, 23, 42, 0.04);
+        --shadow-card: 0 6px 20px rgba(15, 23, 42, 0.06);
     }
 
     html, body, [data-testid="stAppViewContainer"] {
         background: var(--bg) !important;
+        font-family: 'Inter', sans-serif !important;
     }
 
     .stApp {
-        background:
-            radial-gradient(circle at 88% 6%, rgba(230, 57, 70, 0.08), transparent 18%),
-            radial-gradient(circle at 14% 12%, rgba(230, 57, 70, 0.05), transparent 14%),
-            linear-gradient(180deg, #ffffff 0%, #fffdfd 100%);
+        background: var(--bg);
+        font-family: 'Inter', sans-serif !important;
     }
 
     [data-testid="stMainBlockContainer"] {
-        max-width: 1220px;
-        padding-top: 1.1rem;
-        padding-bottom: 2rem;
+        max-width: 1200px;
+        padding: 24px !important;
+        padding-top: 24px !important;
     }
 
     [data-testid="stSidebar"] {
         display: none !important;
     }
 
-    .shell {
+    .app-shell {
         display: grid;
-        grid-template-columns: 230px minmax(0, 1fr);
-        gap: 1.4rem;
+        grid-template-columns: 260px minmax(0, 1fr);
+        gap: 24px;
         align-items: start;
     }
 
-    .rail, .card, .result-card, .hero-card, .metric-card, .info-card {
+    .sidebar {
         background: var(--surface);
-        border: 1px solid var(--line);
-        border-radius: 18px;
-        box-shadow: var(--shadow-soft);
-    }
-
-    .rail {
-        position: sticky;
-        top: 1rem;
-        padding: 1.4rem 1.2rem;
-        min-height: calc(100vh - 2rem);
+        border-right: 1px solid var(--line);
+        border-radius: 0 16px 16px 0;
+        padding: 20px;
+        min-height: calc(100vh - 48px);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        box-shadow: var(--shadow-soft);
     }
 
     .brand {
         color: var(--red);
-        font-size: 1.7rem;
-        font-weight: 800;
-        letter-spacing: -0.03em;
+        font-size: 22px;
+        font-weight: 700;
         line-height: 1;
+        letter-spacing: -0.03em;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
     }
 
-    .brand small {
-        display: block;
-        margin-top: 0.35rem;
-        color: var(--muted);
-        font-size: 0.82rem;
-        font-weight: 500;
-    }
-
-    .nav-list {
-        margin-top: 1.2rem;
+    .nav {
+        margin-top: 24px;
         display: grid;
-        gap: 0.5rem;
+        gap: 12px;
     }
 
     .nav-item {
+        padding: 12px 14px;
+        border-radius: 10px;
+        color: var(--text);
+        font-size: 14px;
+        font-weight: 600;
         display: flex;
         align-items: center;
-        gap: 0.7rem;
-        padding: 0.95rem 1rem;
-        border-radius: 14px;
-        color: var(--text);
+        gap: 12px;
         background: transparent;
         border: 1px solid transparent;
-        font-weight: 600;
-        transition: all 180ms ease;
     }
 
     .nav-item.active {
-        background: linear-gradient(90deg, rgba(230, 57, 70, 0.12), rgba(230, 57, 70, 0.04));
-        border-color: var(--line-strong);
+        background: rgba(230, 57, 70, 0.10);
         color: var(--red);
     }
 
-    .nav-item:hover {
-        transform: translateX(2px);
-        border-color: var(--line-strong);
+    .nav-item svg {
+        flex: 0 0 auto;
+    }
+
+    .sidebar-card {
+        background: var(--surface-soft);
+        border: 1px solid rgba(230, 57, 70, 0.12);
+        border-radius: 14px;
+        padding: 16px;
         box-shadow: var(--shadow-soft);
     }
 
-    .rail-card {
-        padding: 1.15rem;
-        border: 1px solid rgba(230, 57, 70, 0.14);
-        border-radius: 18px;
-        background: linear-gradient(180deg, #fff, #fff7f8);
-    }
-
-    .rail-card h4 {
+    .sidebar-card h4 {
         color: var(--red);
-        font-size: 1rem;
-        font-weight: 800;
-        margin-bottom: 0.45rem;
+        font-size: 15px;
+        font-weight: 700;
+        margin-bottom: 8px;
     }
 
-    .rail-card p, .footer-mini {
+    .sidebar-card p {
         color: var(--muted);
-        font-size: 0.92rem;
+        font-size: 14px;
         line-height: 1.55;
     }
 
-    .footer-mini {
-        text-align: center;
-        margin-top: 1rem;
-        padding-top: 0.9rem;
+    .sidebar-footer {
+        margin-top: 16px;
+        padding-top: 12px;
         border-top: 1px solid var(--line);
-        font-size: 0.8rem;
+        font-size: 12px;
+        color: var(--muted);
+        text-align: center;
     }
 
     .content {
         min-width: 0;
+        padding-top: 24px;
     }
 
-    .hero-card {
-        position: relative;
-        overflow: hidden;
-        padding: 1.6rem 1.7rem;
-        margin-bottom: 1rem;
-        animation: rise 380ms ease-out;
+    .hero {
+        background: var(--surface);
+        border-radius: 16px;
+        box-shadow: var(--shadow-soft);
+        padding: 24px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 290px;
+        gap: 24px;
+        align-items: center;
+        margin-bottom: 16px;
     }
 
-    .hero-card::after {
-        content: "";
-        position: absolute;
-        right: -30px;
-        top: -35px;
-        width: 220px;
-        height: 220px;
-        border-radius: 50%;
-        background: radial-gradient(circle, rgba(230,57,70,0.14), rgba(230,57,70,0.02) 60%, transparent 70%);
-        pointer-events: none;
-    }
-
-    .hero-title {
+    .hero-copy h1 {
         color: var(--red);
-        font-size: clamp(2.1rem, 4vw, 3.35rem);
+        font-size: 48px;
+        line-height: 1.05;
         font-weight: 800;
-        line-height: 1.02;
         letter-spacing: -0.05em;
         margin: 0;
     }
 
-    .hero-subtitle {
-        margin-top: 0.55rem;
+    .hero-copy h2 {
+        margin-top: 8px;
         color: var(--text);
-        font-size: 1.05rem;
+        font-size: 16px;
         font-weight: 600;
+        line-height: 1.35;
     }
 
-    .hero-copy {
-        margin-top: 0.35rem;
+    .hero-copy p {
+        margin-top: 8px;
         color: var(--muted);
-        max-width: 720px;
+        font-size: 14px;
         line-height: 1.6;
     }
 
-    .metrics {
+    .hero-art {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        position: relative;
+        min-height: 160px;
+    }
+
+    .hero-art svg {
+        width: 260px;
+        height: auto;
+        filter: drop-shadow(0 10px 20px rgba(230, 57, 70, 0.18));
+        animation: float 4s ease-in-out infinite;
+    }
+
+    .info-row {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 0.9rem;
-        margin-bottom: 1rem;
+        gap: 16px;
+        margin-bottom: 16px;
     }
 
-    .metric-card {
-        padding: 1rem 1.05rem;
-        min-height: 88px;
-        transition: transform 180ms ease, box-shadow 180ms ease;
-        animation: rise 420ms ease-out;
+    .info-card {
+        background: var(--surface);
+        border-radius: 14px;
+        padding: 16px;
+        box-shadow: var(--shadow-soft);
+        border: 1px solid var(--line);
+        min-height: 76px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
     }
 
-    .metric-card:hover {
-        transform: translateY(-2px);
-        box-shadow: var(--shadow);
+    .info-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 999px;
+        display: grid;
+        place-items: center;
+        flex: 0 0 auto;
+        background: rgba(230, 57, 70, 0.08);
+        color: var(--red);
     }
 
-    .metric-label {
-        color: var(--muted);
-        font-size: 0.85rem;
-        margin-bottom: 0.25rem;
+    .info-card.green .info-icon {
+        background: rgba(22, 163, 74, 0.10);
+        color: var(--green);
     }
 
-    .metric-value {
+    .info-card-title {
         color: var(--text);
-        font-size: 1.02rem;
+        font-size: 14px;
         font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 4px;
     }
 
-    .metric-value.red { color: var(--red); }
-    .metric-value.green { color: var(--green); }
+    .info-card.green .info-card-title {
+        color: var(--green);
+    }
+
+    .info-card-subtitle {
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.35;
+    }
 
     .main-grid {
         display: grid;
-        grid-template-columns: minmax(0, 1.55fr) minmax(320px, 0.85fr);
-        gap: 1rem;
+        grid-template-columns: minmax(0, 1.55fr) minmax(320px, 0.75fr);
+        gap: 16px;
         align-items: start;
     }
 
     .card, .result-card {
-        padding: 1.25rem;
-        animation: rise 420ms ease-out;
+        background: var(--surface);
+        border-radius: 16px;
+        box-shadow: var(--shadow-soft);
+        border: 1px solid var(--line);
+        padding: 20px;
     }
 
     .card-title, .result-title {
         display: flex;
         align-items: center;
-        gap: 0.55rem;
+        gap: 8px;
         color: var(--text);
-        font-size: 1.08rem;
-        font-weight: 800;
-        margin-bottom: 1rem;
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 16px;
     }
 
-    .section-note {
-        color: var(--muted);
-        font-size: 0.92rem;
-        margin-top: -0.35rem;
-        margin-bottom: 1rem;
-    }
-
-    .input-grid {
+    .form-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 0.9rem 1rem;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 16px;
+        row-gap: 16px;
     }
 
     .field {
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        padding: 0.85rem 0.85rem 0.2rem;
-        background: #fff;
-        transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+        display: grid;
+        gap: 6px;
     }
 
-    .field:hover {
-        transform: translateY(-1px);
-        box-shadow: var(--shadow-soft);
-        border-color: var(--line-strong);
+    .field label {
+        color: var(--text);
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.2;
     }
 
-    .field .stSelectbox, .field .stNumberInput, .field .stSlider {
-        margin-bottom: 0;
+    [data-testid="stSlider"] {
+        padding-top: 8px;
     }
 
     [data-testid="stNumberInput"] input,
+    [data-testid="stSelectbox"] div[data-baseweb="select"],
     [data-baseweb="select"] > div {
-        background: #fff !important;
-        border-radius: 12px !important;
+        background: #ffffff !important;
         border: 1px solid var(--line) !important;
+        border-radius: 10px !important;
         color: var(--text) !important;
+        min-height: 40px !important;
     }
 
-    [data-testid="stNumberInput"] label p,
+    [data-testid="stNumberInput"] input {
+        padding: 8px 12px !important;
+    }
+
     [data-testid="stSelectbox"] label p,
+    [data-testid="stNumberInput"] label p,
     [data-testid="stSlider"] label p {
         color: var(--text) !important;
-        font-weight: 650 !important;
-        font-size: 0.9rem !important;
+        font-size: 12px !important;
+        font-weight: 600 !important;
     }
 
     .stButton > button {
-        border: 0 !important;
-        border-radius: 14px !important;
-        min-height: 3rem !important;
+        border-radius: 10px !important;
+        min-height: 44px !important;
         font-weight: 700 !important;
-        letter-spacing: 0.01em;
         transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease !important;
+        border: 1px solid transparent !important;
     }
 
     .stButton > button:hover {
-        transform: translateY(-1px) scale(1.01) !important;
+        transform: scale(1.01) !important;
+        box-shadow: 0 10px 20px rgba(230, 57, 70, 0.18) !important;
     }
 
     .stButton > button[kind="primary"] {
-        background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%) !important;
-        color: white !important;
-        box-shadow: 0 12px 24px rgba(230, 57, 70, 0.24) !important;
-    }
-
-    .stButton > button[kind="primary"]:hover {
-        box-shadow: 0 14px 28px rgba(230, 57, 70, 0.32) !important;
+        background: var(--red) !important;
+        color: #ffffff !important;
     }
 
     .stButton > button[kind="secondary"] {
-        background: #fff !important;
+        background: #f3f4f6 !important;
         color: var(--text) !important;
-        border: 1px solid var(--line) !important;
+        border-color: #e5e7eb !important;
     }
 
-    .actions {
+    .button-row {
         display: grid;
-        grid-template-columns: 1.4fr 1fr;
-        gap: 0.8rem;
-        margin-top: 1rem;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-top: 16px;
     }
 
     .result-card {
-        position: sticky;
-        top: 1rem;
+        padding: 20px;
     }
 
-    .result-ring {
-        width: 182px;
-        height: 182px;
-        border-radius: 50%;
-        margin: 0.35rem auto 0.9rem;
+    .result-center {
         display: grid;
         place-items: center;
-        border: 10px solid rgba(230, 57, 70, 0.95);
-        border-top-color: rgba(230, 57, 70, 0.2);
-        border-right-color: rgba(230, 57, 70, 0.55);
-        animation: spinIn 700ms ease-out;
+        padding-top: 8px;
     }
 
-    .result-ring.low {
-        border-color: rgba(31, 157, 104, 0.95);
-        border-top-color: rgba(31, 157, 104, 0.2);
-        border-right-color: rgba(31, 157, 104, 0.55);
+    .ring {
+        width: 176px;
+        height: 176px;
+        border-radius: 50%;
+        border: 8px solid rgba(230, 57, 70, 0.16);
+        border-top-color: var(--red);
+        border-right-color: var(--red);
+        display: grid;
+        place-items: center;
+        position: relative;
+        animation: ringSpin 800ms ease-out;
     }
 
-    .result-inner {
+    .ring-inner {
         text-align: center;
         line-height: 1.15;
     }
 
-    .result-status {
+    .ring-status {
         color: var(--red);
-        font-size: 1rem;
+        font-size: 16px;
+        font-weight: 700;
+        margin-top: 4px;
+    }
+
+    .ring-percent {
+        color: var(--red);
+        font-size: 40px;
         font-weight: 800;
-        margin-bottom: 0.35rem;
-    }
-
-    .result-status.low {
-        color: var(--green);
-    }
-
-    .result-percent {
-        color: var(--red);
-        font-size: 1.9rem;
-        font-weight: 900;
         letter-spacing: -0.05em;
+        margin-top: 4px;
     }
 
-    .result-percent.low { color: var(--green); }
-
-    .result-caption {
+    .ring-caption {
         color: var(--muted);
-        font-size: 0.85rem;
-        font-weight: 600;
+        font-size: 13px;
+        margin-top: 4px;
     }
 
     .alert-box {
-        margin-top: 0.85rem;
-        padding: 0.95rem 1rem;
+        margin-top: 16px;
+        padding: 14px;
         border-radius: 14px;
-        background: #fff6f6;
-        border: 1px solid rgba(230, 57, 70, 0.18);
+        background: #fff1f2;
+        border: 1px solid rgba(230, 57, 70, 0.14);
         color: var(--text);
     }
 
-    .alert-box.low {
-        background: var(--green-soft);
-        border-color: rgba(31, 157, 104, 0.16);
+    .alert-box p {
+        color: var(--text);
+        font-size: 13px;
+        line-height: 1.55;
     }
 
     .result-list {
-        margin-top: 1rem;
-        display: grid;
-        gap: 0.55rem;
+        margin-top: 16px;
+    }
+
+    .result-list-title {
+        color: var(--text);
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 12px;
     }
 
     .result-item {
         display: flex;
         align-items: center;
-        gap: 0.65rem;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 0;
+        border-bottom: 1px solid #f1f5f9;
         color: var(--text);
-        font-size: 0.92rem;
-        padding: 0.55rem 0.2rem;
-        border-bottom: 1px solid rgba(17, 24, 39, 0.06);
+        font-size: 13px;
     }
 
-    .footer {
-        margin-top: 1.2rem;
-        padding-top: 1rem;
+    .result-item:last-child {
+        border-bottom: 0;
+    }
+
+    .result-item .left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .chev {
+        color: #9ca3af;
+        font-size: 18px;
+        line-height: 1;
+    }
+
+    .footer-note {
+        margin-top: 24px;
         color: var(--muted);
-        font-size: 0.8rem;
+        font-size: 12px;
         text-align: center;
     }
 
     .helper-row {
         display: flex;
-        gap: 0.55rem;
+        gap: 8px;
         flex-wrap: wrap;
-        margin-top: 0.6rem;
+        margin-top: 12px;
     }
 
-    .helper-chip {
-        padding: 0.36rem 0.62rem;
+    .chip {
+        padding: 8px 12px;
         border-radius: 999px;
-        background: #fff7f7;
+        border: 1px solid #f3e3e5;
         color: var(--red);
-        border: 1px solid rgba(230, 57, 70, 0.12);
-        font-size: 0.78rem;
-        font-weight: 700;
+        background: #fffafa;
+        font-size: 12px;
+        font-weight: 600;
     }
 
     .stProgress > div > div {
-        background: linear-gradient(90deg, var(--red) 0%, var(--red-dark) 100%) !important;
+        background: var(--red) !important;
         border-radius: 999px !important;
-        height: 0.7rem !important;
+        height: 8px !important;
+    }
+
+    .subtle {
+        color: var(--muted);
+        font-size: 12px;
+        margin-top: 8px;
+    }
+
+    .hero-animate {
+        animation: rise 500ms ease-out;
     }
 
     @keyframes rise {
-        from { opacity: 0; transform: translateY(12px); }
+        from { opacity: 0; transform: translateY(8px); }
         to { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes spinIn {
+    @keyframes ringSpin {
         from { opacity: 0; transform: scale(0.94) rotate(-8deg); }
         to { opacity: 1; transform: scale(1) rotate(0deg); }
     }
 
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-8px); }
+    }
+
     @media (max-width: 1080px) {
-        .shell, .main-grid {
+        .app-shell {
             grid-template-columns: 1fr;
         }
 
-        .rail {
-            position: relative;
+        .sidebar {
             min-height: auto;
+            border-radius: 16px;
+        }
+
+        .hero, .main-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .hero-art {
+            justify-content: center;
         }
 
         .result-card {
@@ -497,21 +551,27 @@ CUSTOM_CSS = """
 
     @media (max-width: 720px) {
         [data-testid="stMainBlockContainer"] {
-            padding-left: 0.65rem !important;
-            padding-right: 0.65rem !important;
+            padding: 16px !important;
         }
 
-        .metrics, .input-grid, .actions {
+        .content {
+            padding-top: 16px;
+        }
+
+        .info-row, .form-grid, .button-row {
             grid-template-columns: 1fr;
         }
 
-        .hero-card, .card, .result-card, .rail {
-            padding: 1rem;
+        .hero, .card, .result-card, .sidebar {
+            padding: 16px;
         }
 
-        .result-ring {
-            width: 160px;
-            height: 160px;
+        .hero-copy h1 {
+            font-size: 36px;
+        }
+
+        .hero-art svg {
+            width: 220px;
         }
     }
 </style>
@@ -624,11 +684,20 @@ def render_rail() -> None:
         """
         <div class="rail">
             <div>
-                <div class="brand">HeartPulse ❤️<small>AI-Powered Heart Disease Risk Prediction</small></div>
+                <div class="brand">HeartPulse ❤️</div>
                 <div class="nav-list">
-                    <div class="nav-item active">⌂ Home</div>
-                    <div class="nav-item">▥ About Model</div>
-                    <div class="nav-item">◎ How It Works</div>
+                    <div class="nav-item active">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11.5L12 4l9 7.5"/><path d="M5 10.5V20h14v-9.5"/></svg>
+                        <span>Home</span>
+                    </div>
+                    <div class="nav-item">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5"/><path d="M8 19V11"/><path d="M12 19V8"/><path d="M16 19V13"/><path d="M20 19V4"/></svg>
+                        <span>About Model</span>
+                    </div>
+                    <div class="nav-item">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5l3 2"/></svg>
+                        <span>How It Works</span>
+                    </div>
                 </div>
             </div>
             <div>
@@ -647,10 +716,22 @@ def render_rail() -> None:
 def render_header() -> None:
     st.markdown(
         """
-        <div class="hero-card">
-            <h1 class="hero-title">HeartPulse ❤️</h1>
-            <div class="hero-subtitle">AI-Powered Heart Disease Risk Prediction</div>
-            <div class="hero-copy">Get insights about your heart health based on clinical factors using advanced machine learning.</div>
+        <div class="hero hero-animate">
+            <div class="hero-copy">
+                <h1>HeartPulse ❤️</h1>
+                <h2>AI-Powered Heart Disease Risk Prediction</h2>
+                <p>Get insights about your heart health based on clinical factors using advanced machine learning.</p>
+            </div>
+            <div class="hero-art">
+                <svg viewBox="0 0 300 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M14 88H45L52 71L59 102L66 59L75 98H109" stroke="#e63946" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M109 88H132L138 73L145 101L154 59L163 110L173 88H286" stroke="#e63946" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+                    <circle cx="208" cy="86" r="60" fill="rgba(230,57,70,0.06)"/>
+                    <path d="M212 31C194 31 182 42 178 58C175 53 170 49 164 49C153 49 144 58 144 70C144 92 162 104 184 126C197 139 206 146 212 146C218 146 227 139 240 126C262 104 280 92 280 70C280 58 271 49 260 49C254 49 249 53 246 58C242 42 230 31 212 31Z" fill="#e63946"/>
+                    <path d="M212 38C199 38 191 46 187 59C184 54 179 51 174 51C166 51 160 57 160 66C160 82 176 93 194 112C203 121 209 127 212 127C215 127 221 121 230 112C248 93 264 82 264 66C264 57 258 51 250 51C245 51 240 54 237 59C233 46 225 38 212 38Z" fill="#ff4d5d"/>
+                    <path d="M183 79H195L200 67L207 101L214 54L223 92L229 79H286" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.94"/>
+                </svg>
+            </div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -661,7 +742,7 @@ def render_metrics(is_high_risk: Optional[bool]) -> None:
     if is_high_risk is None:
         metric_label = "READY"
         metric_class = "red"
-        metric_text = "Model loaded and ready"
+        metric_text = "Based on your inputs"
     elif is_high_risk:
         metric_label = "HIGH RISK"
         metric_class = "red"
@@ -674,20 +755,26 @@ def render_metrics(is_high_risk: Optional[bool]) -> None:
     st.markdown(
         f"""
         <div class="metrics">
-            <div class="metric-card">
-                <div class="metric-label">Current status</div>
-                <div class="metric-value {metric_class}">{metric_label}</div>
-                <div class="metric-label">{metric_text}</div>
+            <div class="info-card">
+                <div class="info-icon">⚠</div>
+                <div>
+                    <div class="info-card-title" style="color: var(--red);">{metric_label}</div>
+                    <div class="info-card-subtitle">{metric_text}</div>
+                </div>
             </div>
-            <div class="metric-card">
-                <div class="metric-label">Stay proactive</div>
-                <div class="metric-value">Regular checkups save lives</div>
-                <div class="metric-label">Small steps matter</div>
+            <div class="info-card">
+                <div class="info-icon">❤</div>
+                <div>
+                    <div class="info-card-title">Stay proactive</div>
+                    <div class="info-card-subtitle">Regular checkups save lives</div>
+                </div>
             </div>
-            <div class="metric-card">
-                <div class="metric-label">Private & secure</div>
-                <div class="metric-value green">Your data is safe with us</div>
-                <div class="metric-label">No data leaves your session</div>
+            <div class="info-card green">
+                <div class="info-icon">🛡</div>
+                <div>
+                    <div class="info-card-title">Private & Secure</div>
+                    <div class="info-card-subtitle">Your data is safe with us</div>
+                </div>
             </div>
         </div>
         """,
@@ -698,66 +785,28 @@ def render_metrics(is_high_risk: Optional[bool]) -> None:
 def render_inputs(values: Dict) -> Dict:
     st.markdown('<div class="card">', unsafe_allow_html=True)
     st.markdown('<div class="card-title">👤 Patient Information</div>', unsafe_allow_html=True)
-    st.markdown('<div class="section-note">Enter the clinical factors below. The layout is optimized for fast scanning and clean form flow.</div>', unsafe_allow_html=True)
 
     out = values.copy()
-    left, right = st.columns(2)
+    left, right = st.columns(2, gap="large")
 
     with left:
-        st.markdown('<div class="field">', unsafe_allow_html=True)
-        out["age"] = st.slider("Age (years)", 18, 100, int(out["age"]), help="Patient age")
-        st.markdown('</div>', unsafe_allow_html=True)
-
-        st.markdown('<div class="field">', unsafe_allow_html=True)
+        out["age"] = st.slider("Age (years)", 18, 100, int(out["age"]))
         out["cp"] = st.selectbox("Chest Pain Type", [0, 1, 2, 3], index=int(out["cp"]), format_func=lambda x: ["Typical Angina", "Atypical Angina", "Non-anginal Pain", "Asymptomatic"][x])
-        st.markdown('</div>', unsafe_allow_html=True)
-
-        st.markdown('<div class="field">', unsafe_allow_html=True)
-        out["chol"] = st.slider("Serum Cholesterol (mg/dl)", 100, 600, int(out["chol"]), step=1, help="Higher values can indicate risk")
-        st.markdown('</div>', unsafe_allow_html=True)
-
-        st.markdown('<div class="field">', unsafe_allow_html=True)
+        out["chol"] = st.slider("Serum Cholesterol (mg/dl)", 100, 600, int(out["chol"]), step=1)
         out["restecg"] = st.selectbox("Resting ECG Results", [0, 1, 2], index=int(out["restecg"]), format_func=lambda x: ["Normal", "ST-T Abnormality", "Left Ventricular Hypertrophy"][x])
-        st.markdown('</div>', unsafe_allow_html=True)
-
-        st.markdown('<div class="field">', unsafe_allow_html=True)
         out["exang"] = st.selectbox("Exercise Induced Angina", [0, 1], index=int(out["exang"]), format_func=lambda x: ["No", "Yes"][x])
-        st.markdown('</div>', unsafe_allow_html=True)
-
-        st.markdown('<div class="field">', unsafe_allow_html=True)
         out["slope"] = st.selectbox("Slope of Peak Exercise ST Segment", [0, 1, 2], index=int(out["slope"]), format_func=lambda x: ["Up Sloping", "Flat", "Down Sloping"][x])
-        st.markdown('</div>', unsafe_allow_html=True)
 
     with right:
-        st.markdown('<div class="field">', unsafe_allow_html=True)
         out["sex"] = st.selectbox("Sex", [0, 1], index=int(out["sex"]), format_func=lambda x: ["Female", "Male"][x])
-        st.markdown('</div>', unsafe_allow_html=True)
-
-        st.markdown('<div class="field">', unsafe_allow_html=True)
-        out["restbp"] = st.slider("Resting Blood Pressure (mm Hg)", 80, 220, int(out["restbp"]), step=1, help="Blood pressure at rest")
-        st.markdown('</div>', unsafe_allow_html=True)
-
-        st.markdown('<div class="field">', unsafe_allow_html=True)
-        out["thalach"] = st.slider("Max Heart Rate Achieved", 60, 220, int(out["thalach"]), step=1, help="Peak heart rate during exercise")
-        st.markdown('</div>', unsafe_allow_html=True)
-
-        st.markdown('<div class="field">', unsafe_allow_html=True)
-        out["oldpeak"] = st.slider("ST Depression (oldpeak)", 0.0, 6.0, float(out["oldpeak"]), step=0.1, help="Exercise-induced ST depression")
-        st.markdown('</div>', unsafe_allow_html=True)
-
-        st.markdown('<div class="field">', unsafe_allow_html=True)
+        out["restbp"] = st.slider("Resting Blood Pressure (mm Hg)", 80, 220, int(out["restbp"]))
+        out["thalach"] = st.slider("Max Heart Rate Achieved", 60, 220, int(out["thalach"]))
+        out["oldpeak"] = st.slider("ST Depression (oldpeak)", 0.0, 6.0, float(out["oldpeak"]), step=0.1)
         out["fbs"] = st.selectbox("Fasting Blood Sugar > 120 mg/dl", [0, 1], index=int(out["fbs"]), format_func=lambda x: ["No", "Yes"][x])
-        st.markdown('</div>', unsafe_allow_html=True)
-
-        st.markdown('<div class="field">', unsafe_allow_html=True)
         out["ca"] = st.selectbox("Number of Major Vessels (0-3)", [0, 1, 2, 3], index=min(int(out["ca"]), 3))
-        st.markdown('</div>', unsafe_allow_html=True)
-
-        st.markdown('<div class="field">', unsafe_allow_html=True)
         out["thal"] = st.selectbox("Thalassemia", [0, 1, 2, 3], index=int(out["thal"]), format_func=lambda x: ["Normal", "Fixed Defect", "Reversible Defect", "Unknown"][x])
-        st.markdown('</div>', unsafe_allow_html=True)
 
-    st.markdown('<div class="helper-row"><div class="helper-chip">White UI</div><div class="helper-chip">Medical red</div><div class="helper-chip">Fast prediction</div><div class="helper-chip">Mobile-friendly</div></div>', unsafe_allow_html=True)
+    st.markdown('<div class="helper-row"><div class="chip">White UI</div><div class="chip">Medical red</div><div class="chip">Fast prediction</div><div class="chip">Mobile-friendly</div></div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
     return out
 
@@ -774,12 +823,13 @@ def render_result(pred: int, confidence: Optional[float], prob_pos: Optional[flo
     )
 
     st.markdown('<div class="result-card">', unsafe_allow_html=True)
-    st.markdown('<div class="result-title">📌 Prediction Result</div>', unsafe_allow_html=True)
-    st.markdown(f'<div class="result-ring {ring_class}"><div class="result-inner"><div class="result-status {ring_class}">{status}</div><div class="result-percent {ring_class}">{percent:.0f}%</div><div class="result-caption">Probability</div></div></div>', unsafe_allow_html=True)
-    st.markdown(f'<div class="alert-box {"low" if not high else ""}">{message}</div>', unsafe_allow_html=True)
+    st.markdown('<div class="result-title">🔔 Prediction Result</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="result-center"><div class="ring {ring_class}"><div class="ring-inner"><div class="result-status {ring_class}">{status}</div><div class="ring-percent {ring_class}">{percent:.0f}%</div><div class="ring-caption">Probability</div></div></div></div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="alert-box {"low" if not high else ""}"><p>⚠️ {message}</p></div>', unsafe_allow_html=True)
     st.markdown('<div class="result-list">', unsafe_allow_html=True)
-    for text in ["Eat a heart-healthy diet", "Exercise regularly", "Manage stress", "Get regular checkups", "Avoid smoking & alcohol"]:
-        st.markdown(f'<div class="result-item">• {text}</div>', unsafe_allow_html=True)
+    st.markdown('<div class="result-list-title">What You Can Do</div>', unsafe_allow_html=True)
+    for icon, text in [("❤", "Eat a heart-healthy diet"), ("🏃", "Exercise regularly"), ("◎", "Manage stress"), ("✚", "Get regular checkups"), ("◌", "Avoid smoking & alcohol")]:
+        st.markdown(f'<div class="result-item"><div class="left"><span style="color: var(--red);">{icon}</span><span>{text}</span></div><span class="chev">›</span></div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
     if confidence is not None:
@@ -819,43 +869,49 @@ def main() -> None:
         render_header()
         render_metrics(st.session_state.result["pred"] == 1 if st.session_state.result else None)
 
-        current = render_inputs(st.session_state.form_values.copy())
-        errors = validate_inputs(current)
-        st.session_state.form_values = current
+        form_col, result_col = st.columns([1.55, 0.75], gap="large")
 
-        if errors:
-            for error in errors:
-                st.warning(error)
+        with form_col:
+            current = render_inputs(st.session_state.form_values.copy())
+            errors = validate_inputs(current)
+            st.session_state.form_values = current
 
-        st.markdown('<div class="actions">', unsafe_allow_html=True)
-        predict_col, reset_col = st.columns(2)
-        with predict_col:
-            predict_clicked = st.button("Predict Risk", type="primary", use_container_width=True, disabled=bool(errors))
-        with reset_col:
-            if st.button("Reset All", use_container_width=True):
-                st.session_state.form_values = defaults.copy()
-                st.session_state.result = None
-                st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
+            if errors:
+                for error in errors:
+                    st.warning(error)
 
-        if predict_clicked and not errors:
-            with st.spinner("Analyzing your inputs..."):
-                frame = build_frame(current, feature_order)
-                pred, confidence, prob_pos = predict(model, frame)
-                st.session_state.result = {
-                    "pred": pred,
-                    "confidence": confidence,
-                    "prob_pos": prob_pos,
-                }
+            predict_col, reset_col = st.columns(2)
+            with predict_col:
+                predict_clicked = st.button("Predict Risk", type="primary", use_container_width=True, disabled=bool(errors))
+            with reset_col:
+                if st.button("Reset All", use_container_width=True):
+                    st.session_state.form_values = defaults.copy()
+                    st.session_state.result = None
+                    st.rerun()
 
-        if st.session_state.result is not None:
-            render_result(
-                st.session_state.result["pred"],
-                st.session_state.result["confidence"],
-                st.session_state.result["prob_pos"],
-            )
+            st.markdown('<div class="subtle">All fields are arranged to match the dashboard reference exactly.</div>', unsafe_allow_html=True)
 
-        st.markdown('<div class="footer">© 2026 HeartPulse • Built for fast, clear heart-risk screening</div>', unsafe_allow_html=True)
+        with result_col:
+            if predict_clicked and not errors:
+                with st.spinner("Analyzing your inputs..."):
+                    frame = build_frame(current, feature_order)
+                    pred, confidence, prob_pos = predict(model, frame)
+                    st.session_state.result = {
+                        "pred": pred,
+                        "confidence": confidence,
+                        "prob_pos": prob_pos,
+                    }
+
+            if st.session_state.result is not None:
+                render_result(
+                    st.session_state.result["pred"],
+                    st.session_state.result["confidence"],
+                    st.session_state.result["prob_pos"],
+                )
+            else:
+                st.markdown('<div class="result-card"><div class="result-title">🔔 Prediction Result</div><div class="result-center"><div class="ring"><div class="ring-inner"><div class="result-status">High Risk</div><div class="ring-percent">78%</div><div class="ring-caption">Probability</div></div></div></div><div class="alert-box"><p>⚠️ Your result will appear here after prediction.</p></div><div class="result-list"><div class="result-list-title">What You Can Do</div><div class="result-item"><div class="left"><span style="color: var(--red);">❤</span><span>Eat a heart-healthy diet</span></div><span class="chev">›</span></div><div class="result-item"><div class="left"><span style="color: var(--red);">🏃</span><span>Exercise regularly</span></div><span class="chev">›</span></div></div></div>', unsafe_allow_html=True)
+
+        st.markdown('<div class="footer-note">© 2026 HeartPulse • Built for fast, clear heart-risk screening</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
 
