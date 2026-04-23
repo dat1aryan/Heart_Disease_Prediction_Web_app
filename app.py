@@ -740,7 +740,7 @@ def render_hero() -> None:
     <div class="hero-grid">
         <div>
             <div class="hero-brand-row">
-                <h1 class="hero-title">HeartPulse <img src="data:image/png;base64,{get_b64('apple_heart.png')}" style="width:0.95em; height:0.95em; vertical-align:-0.1em; filter:drop-shadow(0 2px 3px rgba(230,57,70,0.25));" alt="iOS Heart"/></h1>
+                <h1 class="hero-title" style="color: var(--red);">HeartPulse <img src="data:image/png;base64,{get_b64('apple_heart.png')}" style="width:0.95em; height:0.95em; vertical-align:-0.1em; filter:drop-shadow(0 2px 3px rgba(230,57,70,0.25));" alt="iOS Heart"/></h1>
             </div>
             <div class="hero-subtitle">AI-Powered Heart Disease Risk Prediction</div>
             <div class="hero-copy">Get insights about your heart health based on clinical factors using advanced machine learning.</div>
