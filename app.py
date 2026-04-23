@@ -794,7 +794,6 @@ def render_home(model, feature_order: List[str], defaults: Dict) -> None:
     form_col, result_col = st.columns([1.55, 0.75], gap="large")
 
     with form_col:
-        st.markdown('<div class="card">', unsafe_allow_html=True)
         st.markdown(
             f'<div class="form-title">{icon_svg("user", 18, "currentColor")} Patient Information</div>',
             unsafe_allow_html=True,
@@ -849,8 +848,6 @@ def render_home(model, feature_order: List[str], defaults: Dict) -> None:
                 st.session_state.result = None
                 st.rerun()
 
-        st.markdown('</div>', unsafe_allow_html=True)
-
     with result_col:
         if predict_clicked and not errors:
             with st.spinner("Analyzing your inputs..."):
@@ -877,7 +874,6 @@ def render_home(model, feature_order: List[str], defaults: Dict) -> None:
         status_text = "⚠️<br/>High Risk" if is_high else "✅<br/>Low Risk"
         risk_value = max(0.0, min(1.0, prob_pos if prob_pos is not None else confidence))
 
-        st.markdown('<div class="card">', unsafe_allow_html=True)
         st.markdown(
             f'<div class="result-title">{icon_svg("home", 18, "var(--red)")} Prediction Result</div>',
             unsafe_allow_html=True,
@@ -928,7 +924,6 @@ def render_home(model, feature_order: List[str], defaults: Dict) -> None:
             )
 
         st.progress(risk_value)
-        st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown('</div>', unsafe_allow_html=True)
 
