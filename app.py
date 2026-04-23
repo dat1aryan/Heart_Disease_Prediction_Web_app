@@ -745,16 +745,16 @@ def render_hero() -> None:
             <div class="hero-subtitle">AI-Powered Heart Disease Risk Prediction</div>
             <div class="hero-copy">Get insights about your heart health based on clinical factors using advanced machine learning.</div>
         </div>
-        <div class="hero-heart" style="position: relative; display: flex; justify-content: center; align-items: center; min-height: 240px;">
+        <div class="hero-heart" style="position: relative; display: flex; justify-content: center; align-items: center; min-height: 240px; -webkit-mask-image: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%); mask-image: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%);">
             <!-- Pale pink fading aura background -->
-            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 140%; height: 140%; background: radial-gradient(ellipse, #ffe0e4 0%, rgba(255,255,255,0) 65%); z-index: 0; pointer-events: none;"></div>
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 180%; height: 140%; background: radial-gradient(ellipse, #ffe0e4 0%, rgba(255,255,255,0) 65%); z-index: 0; pointer-events: none;"></div>
             <!-- SVG ECG line sweeping across -->
-            <svg viewBox="0 0 220 180" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 130%; height: auto; z-index: 1; opacity: 0.35;">
-                <path d="M12 88H45L52 72L59 102L67 60L76 98H108" stroke="#e63946" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M108 88H131L137 74L145 100L153 58L162 110L172 88H208" stroke="#e63946" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <svg viewBox="0 0 220 180" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 150%; height: auto; z-index: 1; opacity: 0.35;">
+                <path d="M0 88H45L52 72L59 102L67 60L76 98H108" stroke="#e63946" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M108 88H131L137 74L145 100L153 58L162 110L172 88H220" stroke="#e63946" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            <!-- 3D Generated Heart with Smooth Edge Fade and Pulse Animation -->
-            <img src="data:image/png;base64,{get_b64('hero_heart.png')}" style="position: relative; z-index: 2; width: 100%; max-width: 250px; filter: drop-shadow(0 15px 30px rgba(230,57,70,0.3)); -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 80%); mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 80%); animation: pulseHeart 4s infinite ease-in-out;" alt="HeartPulse Hero Image"/>
+            <!-- 3D Generated Heart with Pulse Animation -->
+            <img src="data:image/png;base64,{get_b64('hero_heart.png')}" style="position: relative; z-index: 2; width: 100%; max-width: 250px; filter: drop-shadow(0 15px 30px rgba(230,57,70,0.3)); animation: pulseHeart 4s infinite ease-in-out;" alt="HeartPulse Hero Image"/>
         </div>
     </div>
 </div>
