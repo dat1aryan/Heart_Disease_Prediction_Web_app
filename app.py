@@ -703,13 +703,13 @@ def render_sidebar() -> str:
                         <svg style="position: absolute; bottom: -8px; right: -8px; width: 12px; height: 12px; color: #ff4757;" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5L12 0Z"/>
                         </svg>
-                        <img src="https://raw.githubusercontent.com/dat1aryan/Heart_Disease_Prediction_Web_app/main/apple_heart.png" style="width:100%; height:100%; filter: drop-shadow(0 4px 8px rgba(230,57,70,0.3));" />
+                        <div style="font-size: 50px; line-height: 1; text-align: center; text-shadow: 0 8px 16px rgba(230,57,70,0.4);">❤️</div>
                     </div>
                 </div>
                 <div class="sidebar-card-title" style="text-align: center;">Your heart, our priority.</div>
                 <div class="sidebar-card-copy" style="text-align: center;">Take control of your health with AI-powered insights.</div>
             </div>
-            <div class="sidebar-footer">© 2026 HeartPulse <img src="https://raw.githubusercontent.com/dat1aryan/Heart_Disease_Prediction_Web_app/main/footer_heart.png" style="width:0.95em; height:0.95em; vertical-align:-0.1em; filter:drop-shadow(0 2px 3px rgba(230,57,70,0.25));" alt="iOS Heart"/><br/>All rights reserved.</div>
+            <div class="sidebar-footer">© 2026 HeartPulse <span style="font-size: 0.95em; vertical-align: -0.1em; text-shadow: 0 2px 4px rgba(230,57,70,0.25);">❤️</span><br/>All rights reserved.</div>
             """,
             unsafe_allow_html=True,
         )
@@ -732,22 +732,10 @@ def render_hero() -> None:
                     <!-- Pale pink fading aura background -->
                     <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 140%; height: 140%; background: radial-gradient(ellipse, #ffe0e4 0%, rgba(255,255,255,0) 65%); z-index: 0; pointer-events: none;"></div>
                     
-                    <!-- SVG ECG line sweeping across -->
-                    <svg viewBox="0 0 220 180" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 130%; height: auto; z-index: 1; opacity: 0.35;">
-                        <path d="M12 88H45L52 72L59 102L67 60L76 98H108" stroke="#e63946" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M108 88H131L137 74L145 100L153 58L162 110L172 88H208" stroke="#e63946" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    
-                    <!-- Premium SVG Lucide Heart -->
-                    <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 24 24" fill="url(#heroGrad)" stroke="none" style="filter: drop-shadow(0 15px 30px rgba(230,57,70,0.4)); position: relative; z-index: 2;">
-                        <defs>
-                            <linearGradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#ff6b81" />
-                                <stop offset="100%" stop-color="#e63946" />
-                            </linearGradient>
-                        </defs>
-                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
-                    </svg>
+                    <!-- Crash-Proof Pulsing CSS Heart -->
+                    <div style="font-size: 140px; position: relative; z-index: 2; text-shadow: 0 20px 40px rgba(230,57,70,0.4);">
+                        ❤️
+                    </div>
                 </div>
             </div>
         </div>
