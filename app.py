@@ -228,20 +228,20 @@ html, body, [data-testid="stAppViewContainer"], .stApp {
 }
 
 /* Target the main content blocks to render as cards */
-.card,
 [data-testid="column"] > div > [data-testid="stVerticalBlock"]:has(.form-title),
-[data-testid="column"] > div > [data-testid="stVerticalBlock"]:has(.result-title) {
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: var(--shadow);
-    margin-bottom: 24px;
+[data-testid="column"] > div > [data-testid="stVerticalBlock"]:has(.result-title),
+.card {
+    background: var(--surface) !important;
+    border: 1px solid var(--line) !important;
+    border-radius: 16px !important;
+    padding: 24px !important;
+    box-shadow: var(--shadow) !important;
+    margin-bottom: 24px !important;
 }
 
-.card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+/* Prediction specific polish */
+[data-testid="column"] > div > [data-testid="stVerticalBlock"]:has(.result-title) {
+    border-top: 4px solid var(--red) !important;
 }
 
 .hero-grid {
