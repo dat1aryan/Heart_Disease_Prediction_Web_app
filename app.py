@@ -719,26 +719,23 @@ def render_sidebar() -> str:
 def render_hero() -> None:
     st.markdown(
         """
-        <div class="card page-section">
-            <div class="hero-grid">
-                <div>
-                    <div class="hero-brand-row">
-                        <h1 class="hero-title">HeartPulse ❤️</h1>
-                    </div>
-                    <div class="hero-subtitle">AI-Powered Heart Disease Risk Prediction</div>
-                    <div class="hero-copy">Get insights about your heart health based on clinical factors using advanced machine learning.</div>
-                </div>
-                <div class="hero-heart" style="position: relative; display: flex; justify-content: center; align-items: center; min-height: 240px;">
-                    <!-- Pale pink fading aura background -->
-                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 140%; height: 140%; background: radial-gradient(ellipse, #ffe0e4 0%, rgba(255,255,255,0) 65%); z-index: 0; pointer-events: none;"></div>
-                    
-                    <!-- Crash-Proof Pulsing CSS Heart -->
-                    <div style="font-size: 140px; position: relative; z-index: 2; text-shadow: 0 20px 40px rgba(230,57,70,0.4);">
-                        ❤️
-                    </div>
-                </div>
+<div class="card page-section">
+    <div class="hero-grid">
+        <div>
+            <div class="hero-brand-row">
+                <h1 class="hero-title">HeartPulse ❤️</h1>
             </div>
+            <div class="hero-subtitle">AI-Powered Heart Disease Risk Prediction</div>
+            <div class="hero-copy">Get insights about your heart health based on clinical factors using advanced machine learning.</div>
         </div>
+        <div class="hero-heart" style="position: relative; display: flex; justify-content: center; align-items: center; min-height: 240px;">
+            <!-- Pale pink fading aura background -->
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 140%; height: 140%; background: radial-gradient(ellipse, #ffe0e4 0%, rgba(255,255,255,0) 65%); z-index: 0; pointer-events: none;"></div>
+            <!-- Crash-Proof Pulsing CSS Heart -->
+            <div style="font-size: 140px; position: relative; z-index: 2; text-shadow: 0 20px 40px rgba(230,57,70,0.4);">❤️</div>
+        </div>
+    </div>
+</div>
         """,
         unsafe_allow_html=True,
     )
