@@ -100,13 +100,6 @@ CUSTOM_CSS = """
     --shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
 }
 
-/* Progress bar track: off-white so empty portion shows */
-.stProgress > div > div,
-[data-testid="stProgress"] > div > div {
-    background-color: #f0f0f0 !important;
-    border-radius: 8px !important;
-}
-
 @keyframes pulseHeart {
     0% { transform: scale(0.98); opacity: 0.85; filter: drop-shadow(0 10px 20px rgba(230,57,70,0.2)); }
     50% { transform: scale(1.02); opacity: 1; filter: drop-shadow(0 20px 40px rgba(230,57,70,0.5)); }
