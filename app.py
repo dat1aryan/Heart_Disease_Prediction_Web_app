@@ -7,7 +7,7 @@ import streamlit as st
 
 st.set_page_config(
     page_title="HeartPulse - AI Heart Risk Predictor",
-    page_icon="❤️",
+    page_icon="HP",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -29,6 +29,43 @@ FEATURES = [
     "chol",
 ]
 
+ICON_PATHS = {
+    "heart": '<path d="M12 21s-6.7-4.35-9.3-8.08C.38 9.53 2.26 5.5 6 5.5c2.12 0 3.46 1.12 4 2.12.54-1 1.88-2.12 4-2.12 3.74 0 5.62 4.03 3.3 7.42C18.7 16.65 12 21 12 21z"/>',
+    "activity": '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>',
+    "alert": '<path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+    "shield": '<path d="M12 3 4 7v6c0 5 3.5 8.74 8 10 4.5-1.26 8-5 8-10V7l-8-4z"/>',
+    "user": '<path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/>',
+    "chevron-right": '<polyline points="9 18 15 12 9 6"/>',
+    "droplet": '<path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/>',
+    "trending-down": '<polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/>',
+    "trending-up": '<polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>',
+    "zap": '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
+    "layers": '<polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 12 12 17 22 12"/><polyline points="2 17 12 22 22 17"/>',
+}
+
+
+
+def brand_heart_svg(size: int = 24) -> str:
+    return f'''
+    <svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="url(#heartGrad)" aria-hidden="true" style="filter: drop-shadow(0px 2px 8px rgba(230,57,70,0.35));">
+        <defs>
+            <linearGradient id="heartGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ff7b88" />
+                <stop offset="100%" stop-color="#e63946" />
+            </linearGradient>
+        </defs>
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+    </svg>
+    '''
+
+def icon_svg(name: str, size: int = 18, color: str = "currentColor", css_class: str = "") -> str:
+    path = ICON_PATHS.get(name, "")
+    return (
+        f'<svg class="{css_class}" xmlns="http://www.w3.org/2000/svg" '
+        f'width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" '
+        f'stroke="{color}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{path}</svg>'
+    )
+
 CUSTOM_CSS = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
@@ -47,7 +84,7 @@ CUSTOM_CSS = """
 }
 
 html, body, [data-testid="stAppViewContainer"], .stApp {
-    font-family: 'Inter', sans-serif !important;
+    font-family: "SF Pro Display", "Inter", "Helvetica Neue", sans-serif !important;
     background: var(--bg) !important;
     color: var(--text) !important;
 }
@@ -72,6 +109,10 @@ html, body, [data-testid="stAppViewContainer"], .stApp {
     font-weight: 700;
     line-height: 1.2;
     margin-bottom: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: -0.02em;
 }
 
 .sidebar-card {
@@ -118,6 +159,41 @@ html, body, [data-testid="stAppViewContainer"], .stApp {
     border-color: rgba(230, 57, 70, 0.18);
 }
 
+
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label:nth-child(1) p::before {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-right: 12px;
+    vertical-align: middle;
+    background: currentColor;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'/%3E%3Cpolyline points='9 22 9 12 15 12 15 22'/%3E%3C/svg%3E") no-repeat center / contain;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'/%3E%3Cpolyline points='9 22 9 12 15 12 15 22'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label:nth-child(2) p::before {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-right: 12px;
+    vertical-align: middle;
+    background: currentColor;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='18' y1='20' x2='18' y2='10'/%3E%3Cline x1='12' y1='20' x2='12' y2='4'/%3E%3Cline x1='6' y1='20' x2='6' y2='14'/%3E%3C/svg%3E") no-repeat center / contain;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='18' y1='20' x2='18' y2='10'/%3E%3Cline x1='12' y1='20' x2='12' y2='4'/%3E%3Cline x1='6' y1='20' x2='6' y2='14'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label:nth-child(3) p::before {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-right: 12px;
+    vertical-align: middle;
+    background: currentColor;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='12' y1='16' x2='12' y2='12'/%3E%3Cline x1='12' y1='8' x2='12.01' y2='8'/%3E%3C/svg%3E") no-repeat center / contain;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='12' y1='16' x2='12' y2='12'/%3E%3Cline x1='12' y1='8' x2='12.01' y2='8'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+
 [data-testid="stSidebar"] .stRadio label p {
     color: var(--text) !important;
     font-size: 14px !important;
@@ -134,6 +210,12 @@ html, body, [data-testid="stAppViewContainer"], .stApp {
     border-radius: 16px;
     padding: 20px;
     box-shadow: var(--shadow);
+    transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 .hero-grid {
@@ -150,6 +232,17 @@ html, body, [data-testid="stAppViewContainer"], .stApp {
     line-height: 1.05;
     letter-spacing: -0.04em;
     margin: 0;
+}
+
+.hero-brand-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.hero-brand-icon {
+    color: var(--red);
+    filter: drop-shadow(0 4px 12px rgba(230, 57, 70, 0.24));
 }
 
 .hero-subtitle {
@@ -196,6 +289,9 @@ html, body, [data-testid="stAppViewContainer"], .stApp {
     font-size: 14px;
     font-weight: 700;
     margin-bottom: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .info-title.red {
@@ -216,6 +312,17 @@ html, body, [data-testid="stAppViewContainer"], .stApp {
     display: grid;
     grid-template-columns: minmax(0, 1.55fr) minmax(300px, 0.75fr);
     gap: 16px;
+}
+
+
+.input-label {
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .form-title, .result-title {
@@ -260,9 +367,9 @@ html, body, [data-testid="stAppViewContainer"], .stApp {
 }
 
 .stButton > button[kind="primary"] {
-    background: var(--red) !important;
+    background: linear-gradient(135deg, #e63946 0%, #ff5663 100%) !important;
     color: #ffffff !important;
-    box-shadow: 0 8px 18px rgba(230, 57, 70, 0.20) !important;
+    box-shadow: 0 8px 18px rgba(230, 57, 70, 0.24) !important;
 }
 
 .stButton > button[kind="secondary"] {
@@ -282,9 +389,16 @@ html, body, [data-testid="stAppViewContainer"], .stApp {
     width: 172px;
     height: 172px;
     border-radius: 50%;
-    border: 8px solid rgba(230, 57, 70, 0.14);
-    border-top-color: var(--red);
-    border-right-color: var(--red);
+    display: grid;
+    place-items: center;
+    padding: 8px;
+}
+
+.result-ring-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #fff;
     display: grid;
     place-items: center;
 }
@@ -326,6 +440,9 @@ html, body, [data-testid="stAppViewContainer"], .stApp {
     font-size: 14px;
     font-weight: 700;
     margin-bottom: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .tip-item {
@@ -336,6 +453,24 @@ html, body, [data-testid="stAppViewContainer"], .stApp {
     border-bottom: 1px solid #f1f5f9;
     color: var(--text);
     font-size: 13px;
+}
+
+.tip-left {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.icon-danger {
+    color: var(--red);
+}
+
+.icon-ok {
+    color: var(--green);
+}
+
+.icon-muted {
+    color: #9ca3af;
 }
 
 .tip-item:last-child {
@@ -538,7 +673,10 @@ def predict(model, frame: pd.DataFrame) -> Tuple[int, Optional[float], Optional[
 
 def render_sidebar() -> str:
     with st.sidebar:
-        st.markdown('<div class="sidebar-brand">HeartPulse ❤️</div>', unsafe_allow_html=True)
+        st.markdown(
+            f'<div class="sidebar-brand">HeartPulse {brand_heart_svg(22)}</div>',
+            unsafe_allow_html=True,
+        )
         page = st.radio(
             "Navigation",
             ["Home", "About Model", "How It Works"],
@@ -551,7 +689,7 @@ def render_sidebar() -> str:
                 <div class="sidebar-card-title">Your heart, our priority.</div>
                 <div class="sidebar-card-copy">Take control of your health with AI-powered insights.</div>
             </div>
-            <div class="sidebar-footer">© 2026 HeartPulse ❤️<br/>All rights reserved.</div>
+            <div class="sidebar-footer">© 2026 HeartPulse<br/>All rights reserved.</div>
             """,
             unsafe_allow_html=True,
         )
@@ -564,7 +702,10 @@ def render_hero() -> None:
         <div class="card page-section">
             <div class="hero-grid">
                 <div>
-                    <h1 class="hero-title">HeartPulse ❤️</h1>
+                    <div class="hero-brand-row">
+                        <span class="hero-brand-icon">{brand_heart_svg(28)}</span>
+                        <h1 class="hero-title">HeartPulse</h1>
+                    </div>
                     <div class="hero-subtitle">AI-Powered Heart Disease Risk Prediction</div>
                     <div class="hero-copy">Get insights about your heart health based on clinical factors using advanced machine learning.</div>
                 </div>
@@ -588,15 +729,15 @@ def render_info_row(result: Optional[Dict]) -> None:
         f"""
         <div class="info-row page-section">
             <div class="info-card">
-                <div class="info-title red">{status_label}</div>
+                <div class="info-title red">{icon_svg("alert", 16, "currentColor")} {status_label}</div>
                 <div class="info-copy">Based on your inputs</div>
             </div>
             <div class="info-card">
-                <div class="info-title">Stay proactive</div>
+                <div class="info-title">{icon_svg("activity", 16, "currentColor")} Stay proactive</div>
                 <div class="info-copy">Regular checkups save lives</div>
             </div>
             <div class="info-card">
-                <div class="info-title green">Private & Secure</div>
+                <div class="info-title green">{icon_svg("shield", 16, "currentColor")} Private & Secure</div>
                 <div class="info-copy">Your data is safe with us</div>
             </div>
         </div>
@@ -614,47 +755,43 @@ def render_home(model, feature_order: List[str], defaults: Dict) -> None:
 
     with form_col:
         st.markdown('<div class="card">', unsafe_allow_html=True)
-        st.markdown('<div class="form-title">Patient Information</div>', unsafe_allow_html=True)
+        st.markdown(
+            f'<div class="form-title">{icon_svg("user", 18, "currentColor")} Patient Information</div>',
+            unsafe_allow_html=True,
+        )
 
         vals = st.session_state.form_values.copy()
         left, right = st.columns(2, gap="medium")
 
         with left:
-            vals["age"] = st.slider("Age (years)", 18, 100, int(vals["age"]))
-            vals["cp"] = st.selectbox(
-                "Chest Pain Type",
-                [0, 1, 2, 3],
-                index=int(vals["cp"]),
-                format_func=lambda x: ["Typical Angina", "Atypical Angina", "Non-anginal Pain", "Asymptomatic"][x],
-            )
-            vals["chol"] = st.slider("Serum Cholesterol (mg/dl)", 100, 600, int(vals["chol"]), step=1)
-            vals["restecg"] = st.selectbox(
-                "Resting ECG Results",
-                [0, 1, 2],
-                index=int(vals["restecg"]),
-                format_func=lambda x: ["Normal", "ST-T Abnormality", "Left Ventricular Hypertrophy"][x],
-            )
-            vals["exang"] = st.selectbox("Exercise Induced Angina", [0, 1], index=int(vals["exang"]), format_func=lambda x: ["No", "Yes"][x])
-            vals["slope"] = st.selectbox(
-                "Slope of Peak Exercise ST Segment",
-                [0, 1, 2],
-                index=int(vals["slope"]),
-                format_func=lambda x: ["Up Sloping", "Flat", "Down Sloping"][x],
-            )
+            st.markdown(f'<div class="input-label">{icon_svg("user", 16, "var(--red)")} Age (years)</div>', unsafe_allow_html=True)
+            vals["age"] = st.slider("Age", 18, 100, int(vals["age"]), label_visibility="collapsed")
+            st.markdown(f'<div class="input-label">{icon_svg("heart", 16, "var(--red)")} Chest Pain Type</div>', unsafe_allow_html=True)
+            vals["cp"] = st.selectbox("CP", [0, 1, 2, 3], index=int(vals["cp"]), format_func=lambda x: ["Typical Angina", "Atypical Angina", "Non-anginal Pain", "Asymptomatic"][x], label_visibility="collapsed")
+            st.markdown(f'<div class="input-label">{icon_svg("shield", 16, "var(--red)")} Serum Cholesterol (mg/dl)</div>', unsafe_allow_html=True)
+            vals["chol"] = st.slider("Chol", 100, 600, int(vals["chol"]), step=1, label_visibility="collapsed")
+            st.markdown(f'<div class="input-label">{icon_svg("activity", 16, "var(--red)")} Resting ECG Results</div>', unsafe_allow_html=True)
+            vals["restecg"] = st.selectbox("Rest ECG", [0, 1, 2], index=int(vals["restecg"]), format_func=lambda x: ["Normal", "ST-T Abnormality", "Left Ventricular Hypertrophy"][x], label_visibility="collapsed")
+            st.markdown(f'<div class="input-label">{icon_svg("zap", 16, "var(--red)")} Exercise Induced Angina</div>', unsafe_allow_html=True)
+            vals["exang"] = st.selectbox("Exang", [0, 1], index=int(vals["exang"]), format_func=lambda x: ["No", "Yes"][x], label_visibility="collapsed")
+            st.markdown(f'<div class="input-label">{icon_svg("trending-up", 16, "var(--red)")} Slope of Peak Exercise ST Segment</div>', unsafe_allow_html=True)
+            vals["slope"] = st.selectbox("Slope", [0, 1, 2], index=int(vals["slope"]), format_func=lambda x: ["Up Sloping", "Flat", "Down Sloping"][x], label_visibility="collapsed")
 
         with right:
-            vals["sex"] = st.selectbox("Sex", [0, 1], index=int(vals["sex"]), format_func=lambda x: ["Female", "Male"][x])
-            vals["restbp"] = st.slider("Resting Blood Pressure (mm Hg)", 80, 220, int(vals["restbp"]))
-            vals["thalach"] = st.slider("Max Heart Rate Achieved", 60, 220, int(vals["thalach"]))
-            vals["oldpeak"] = st.slider("ST Depression (oldpeak)", 0.0, 6.0, float(vals["oldpeak"]), step=0.1)
-            vals["fbs"] = st.selectbox("Fasting Blood Sugar > 120 mg/dl", [0, 1], index=int(vals["fbs"]), format_func=lambda x: ["No", "Yes"][x])
-            vals["ca"] = st.selectbox("Number of Major Vessels (0-3)", [0, 1, 2, 3], index=min(int(vals["ca"]), 3))
-            vals["thal"] = st.selectbox(
-                "Thalassemia",
-                [0, 1, 2, 3],
-                index=int(vals["thal"]),
-                format_func=lambda x: ["Normal", "Fixed Defect", "Reversible Defect", "Unknown"][x],
-            )
+            st.markdown(f'<div class="input-label">{icon_svg("user", 16, "var(--red)")} Sex</div>', unsafe_allow_html=True)
+            vals["sex"] = st.selectbox("Sex", [0, 1], index=int(vals["sex"]), format_func=lambda x: ["Female", "Male"][x], label_visibility="collapsed")
+            st.markdown(f'<div class="input-label">{icon_svg("droplet", 16, "var(--red)")} Resting Blood Pressure (mm Hg)</div>', unsafe_allow_html=True)
+            vals["restbp"] = st.slider("Rest BP", 80, 220, int(vals["restbp"]), label_visibility="collapsed")
+            st.markdown(f'<div class="input-label">{icon_svg("heart", 16, "var(--red)")} Max Heart Rate Achieved</div>', unsafe_allow_html=True)
+            vals["thalach"] = st.slider("Thalach", 60, 220, int(vals["thalach"]), label_visibility="collapsed")
+            st.markdown(f'<div class="input-label">{icon_svg("trending-down", 16, "var(--red)")} ST Depression (oldpeak)</div>', unsafe_allow_html=True)
+            vals["oldpeak"] = st.slider("Oldpeak", 0.0, 6.0, float(vals["oldpeak"]), step=0.1, label_visibility="collapsed")
+            st.markdown(f'<div class="input-label">{icon_svg("droplet", 16, "var(--red)")} Fasting Blood Sugar > 120 mg/dl</div>', unsafe_allow_html=True)
+            vals["fbs"] = st.selectbox("FBS", [0, 1], index=int(vals["fbs"]), format_func=lambda x: ["No", "Yes"][x], label_visibility="collapsed")
+            st.markdown(f'<div class="input-label">{icon_svg("layers", 16, "var(--red)")} Number of Major Vessels (0-3)</div>', unsafe_allow_html=True)
+            vals["ca"] = st.selectbox("CA", [0, 1, 2, 3], index=min(int(vals["ca"]), 3), label_visibility="collapsed")
+            st.markdown(f'<div class="input-label">{icon_svg("shield", 16, "var(--red)")} Thalassemia</div>', unsafe_allow_html=True)
+            vals["thal"] = st.selectbox("Thal", [0, 1, 2, 3], index=int(vals["thal"]), format_func=lambda x: ["Normal", "Fixed Defect", "Reversible Defect", "Unknown"][x], label_visibility="collapsed")
 
         st.session_state.form_values = vals
         errors = validate_inputs(vals)
@@ -701,16 +838,24 @@ def render_home(model, feature_order: List[str], defaults: Dict) -> None:
         risk_value = max(0.0, min(1.0, prob_pos if prob_pos is not None else confidence))
 
         st.markdown('<div class="card">', unsafe_allow_html=True)
-        st.markdown('<div class="result-title">Prediction Result</div>', unsafe_allow_html=True)
+        st.markdown(
+            f'<div class="result-title">{icon_svg("alert", 18, "currentColor")} Prediction Result</div>',
+            unsafe_allow_html=True,
+        )
 
+        ring_p = risk_value * 100
+        ring_bg = f"conic-gradient(from -90deg, #ff6b76 0%, #e63946 {ring_p}%, rgba(230,57,70,0.16) {ring_p}%, rgba(230,57,70,0.16) 100%)"
+        
         st.markdown(
             f"""
             <div class="result-ring-wrap">
-                <div class="result-ring">
-                    <div>
-                        <div class="result-status">{status_text}</div>
-                        <div class="result-percent">{risk_value * 100:.0f}%</div>
-                        <div class="result-prob">Probability</div>
+                <div class="result-ring" style="background: {ring_bg};">
+                    <div class="result-ring-inner">
+                        <div>
+                            <div class="result-status">{status_text}</div>
+                            <div class="result-percent">{risk_value * 100:.0f}%</div>
+                            <div class="result-prob">Probability</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -725,7 +870,10 @@ def render_home(model, feature_order: List[str], defaults: Dict) -> None:
         )
         st.markdown(f'<div class="alert-box">{alert_copy}</div>', unsafe_allow_html=True)
 
-        st.markdown('<div class="tip-title">What You Can Do</div>', unsafe_allow_html=True)
+        st.markdown(
+            f'<div class="tip-title">{icon_svg("activity", 16, "currentColor")} What You Can Do</div>',
+            unsafe_allow_html=True,
+        )
         for item in [
             "Eat a heart-healthy diet",
             "Exercise regularly",
@@ -733,7 +881,10 @@ def render_home(model, feature_order: List[str], defaults: Dict) -> None:
             "Get regular checkups",
             "Avoid smoking & alcohol",
         ]:
-            st.markdown(f'<div class="tip-item"><span>{item}</span><span style="color:#9ca3af;">›</span></div>', unsafe_allow_html=True)
+            st.markdown(
+                f'<div class="tip-item"><span class="tip-left">{icon_svg("heart", 16, "#e63946")}<span>{item}</span></span><span class="icon-muted">{icon_svg("chevron-right", 16, "currentColor")}</span></div>',
+                unsafe_allow_html=True,
+            )
 
         st.progress(risk_value)
         st.markdown('</div>', unsafe_allow_html=True)
