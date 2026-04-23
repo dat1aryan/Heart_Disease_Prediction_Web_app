@@ -697,7 +697,7 @@ def predict(model, frame: pd.DataFrame) -> Tuple[int, Optional[float], Optional[
 def render_sidebar() -> str:
     with st.sidebar:
         st.markdown(
-            f'<div class="sidebar-brand">HeartPulse <img src="data:image/png;base64,{{get_b64(\'apple_heart.png\')}}" style="width:0.95em; height:0.95em; vertical-align:-0.1em; filter:drop-shadow(0 2px 3px rgba(230,57,70,0.25));" alt="iOS Heart"/></div>',
+            f'<div class="sidebar-brand">HeartPulse <img src="data:image/png;base64,{get_b64("apple_heart.png")}" style="width:0.95em; height:0.95em; vertical-align:-0.1em; filter:drop-shadow(0 2px 3px rgba(230,57,70,0.25));" alt="iOS Heart"/></div>',
             unsafe_allow_html=True,
         )
         page = st.radio(
