@@ -80,7 +80,7 @@ def icon_svg(name: str, size: int = 18, color: str = "currentColor", css_class: 
     return (
         f'<svg class="{css_class}" xmlns="http://www.w3.org/2000/svg" '
         f'width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" '
-        f'stroke="{color}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{path}</svg>'
+        f'stroke="{color}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;margin-right:6px;">{path}</svg>'
     )
 
 CUSTOM_CSS = """
