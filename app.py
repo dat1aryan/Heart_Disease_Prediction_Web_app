@@ -4,8 +4,9 @@ import joblib
 import pandas as pd
 import streamlit as st
 
+
 st.set_page_config(
-    page_title="Heart Disease Risk",
+    page_title="PulseGuard - Heart Risk",
     page_icon="❤️",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -14,7 +15,7 @@ st.set_page_config(
 MODEL_PATH = Path(__file__).resolve().parent / "heart_disease_pipeline.pkl"
 DATA_PATH = Path(__file__).resolve().parent / "heart.csv"
 
-FEATURES_FALLBACK = [
+FALLBACK_FEATURES = [
     "ca",
     "cp",
     "exang",
@@ -28,229 +29,345 @@ FEATURES_FALLBACK = [
     "chol",
 ]
 
-FEATURE_META = {
-    "age": {"label": "Age", "kind": "int", "min": 18, "max": 100, "step": 1, "help": "Age in years."},
-    "sex": {"label": "Sex", "kind": "cat", "options": [0, 1], "help": "0 = Female, 1 = Male."},
-    "cp": {"label": "Chest Pain Type", "kind": "cat", "options": [0, 1, 2, 3], "help": "Chest pain category."},
-    "chol": {"label": "Cholesterol", "kind": "int", "min": 100, "max": 600, "step": 1, "help": "Serum cholesterol in mg/dl."},
-    "thalach": {"label": "Max Heart Rate", "kind": "int", "min": 60, "max": 230, "step": 1, "help": "Maximum heart rate achieved."},
-    "exang": {"label": "Exercise Induced Angina", "kind": "cat", "options": [0, 1], "help": "0 = No, 1 = Yes."},
-    "oldpeak": {"label": "ST Depression (Oldpeak)", "kind": "float", "min": 0.0, "max": 8.0, "step": 0.1, "help": "ST depression induced by exercise."},
-    "slope": {"label": "Slope", "kind": "cat", "options": [0, 1, 2], "help": "Slope of peak exercise ST segment."},
-    "ca": {"label": "Major Vessels", "kind": "cat", "options": [0, 1, 2, 3, 4], "help": "Number of major vessels colored by fluoroscopy."},
-    "thal": {"label": "Thal", "kind": "cat", "options": [0, 1, 2, 3], "help": "Thalassemia category."},
-    "restecg": {"label": "Resting ECG", "kind": "cat", "options": [0, 1, 2], "help": "Resting electrocardiographic results."},
-}
-
 
 def inject_styles() -> None:
     st.markdown(
         """
         <style>
             :root {
-                --bg: #f4f7fb;
-                --card: rgba(255, 255, 255, 0.88);
-                --text: #0f172a;
-                --muted: #475569;
-                --ok: #16a34a;
-                --warn: #dc2626;
-                --line: rgba(15, 23, 42, 0.08);
-                --accent: #0ea5e9;
-                --accent2: #22c55e;
+                --paper: #eff2f7;
+                --ink: #0b1220;
+                --muted: #5b6475;
+                --panel: rgba(255, 255, 255, 0.82);
+                --panel-strong: rgba(255, 255, 255, 0.94);
+                --line: rgba(13, 21, 37, 0.12);
+                --blue: #0284c7;
+                --teal: #14b8a6;
+                --good: #059669;
+                --bad: #dc2626;
             }
+
             .stApp {
                 background:
-                    radial-gradient(1100px 500px at 0% -10%, rgba(14, 165, 233, 0.18), transparent 45%),
-                    radial-gradient(900px 480px at 100% -20%, rgba(34, 197, 94, 0.16), transparent 50%),
-                    var(--bg);
+                    radial-gradient(900px 600px at -8% -10%, rgba(2,132,199,0.22), transparent 45%),
+                    radial-gradient(860px 600px at 108% -8%, rgba(20,184,166,0.2), transparent 44%),
+                    var(--paper);
             }
+
             .block-container {
-                max-width: 1160px;
-                padding-top: 1.1rem;
+                max-width: 1220px;
+                padding-top: 1.0rem;
                 padding-bottom: 2rem;
             }
-            .hero {
+
+            .orb {
+                position: fixed;
+                width: 260px;
+                height: 260px;
+                border-radius: 50%;
+                filter: blur(48px);
+                z-index: -1;
+                animation: drift 13s ease-in-out infinite;
+                opacity: 0.24;
+            }
+
+            .orb.one {
+                background: #0284c7;
+                left: 4%;
+                top: 12%;
+            }
+
+            .orb.two {
+                background: #14b8a6;
+                right: 6%;
+                top: 26%;
+                animation-delay: 1.9s;
+            }
+
+            @keyframes drift {
+                0%, 100% { transform: translateY(0px) translateX(0px); }
+                50% { transform: translateY(-16px) translateX(8px); }
+            }
+
+            .hero-card {
+                border: 1px solid var(--line);
+                border-radius: 22px;
+                padding: 1.25rem 1.3rem;
+                background: linear-gradient(145deg, var(--panel-strong), var(--panel));
+                backdrop-filter: blur(10px);
+                box-shadow: 0 18px 36px rgba(15, 23, 42, 0.08);
+                margin-bottom: 0.9rem;
+                animation: rise 340ms ease-out 1;
+            }
+
+            @keyframes rise {
+                from { opacity: 0; transform: translateY(8px); }
+                to { opacity: 1; transform: translateY(0px); }
+            }
+
+            .hero-title {
+                margin: 0;
+                color: var(--ink);
+                font-size: 2.0rem;
+                letter-spacing: -0.02em;
+                font-weight: 800;
+            }
+
+            .hero-sub {
+                margin: 0.45rem 0 0 0;
+                color: var(--muted);
+                font-size: 1.0rem;
+            }
+
+            .mini-grid {
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 0.7rem;
+                margin-top: 0.95rem;
+            }
+
+            .mini-card {
+                border: 1px solid var(--line);
+                border-radius: 14px;
+                padding: 0.55rem 0.7rem;
+                background: rgba(255,255,255,0.74);
+            }
+
+            .mini-card h4 {
+                margin: 0;
+                color: var(--ink);
+                font-size: 0.85rem;
+                font-weight: 600;
+            }
+
+            .mini-card p {
+                margin: 0.18rem 0 0 0;
+                color: var(--muted);
+                font-size: 0.82rem;
+            }
+
+            .panel-card {
                 border: 1px solid var(--line);
                 border-radius: 18px;
-                padding: 1.1rem 1.25rem;
-                background: var(--card);
-                backdrop-filter: blur(8px);
-                box-shadow: 0 10px 28px rgba(2, 8, 23, 0.06);
-                margin-bottom: 0.8rem;
+                padding: 0.95rem 1rem 0.6rem 1rem;
+                background: linear-gradient(160deg, var(--panel-strong), var(--panel));
+                box-shadow: 0 14px 30px rgba(15, 23, 42, 0.07);
             }
-            .hero h1 {
+
+            .panel-head {
+                margin: 0 0 0.5rem 0;
+                color: var(--ink);
+                font-size: 1.2rem;
+                font-weight: 700;
+            }
+
+            .result-wrap {
+                border: 1px solid var(--line);
+                border-radius: 18px;
+                padding: 0.95rem 1rem 0.95rem 1rem;
+                margin-top: 0.9rem;
+                background: rgba(255,255,255,0.9);
+                box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
+                animation: rise 260ms ease-out 1;
+            }
+
+            .risk-pill {
+                display: inline-block;
+                padding: 0.36rem 0.7rem;
+                border-radius: 999px;
+                font-weight: 700;
+                font-size: 0.88rem;
+                margin-bottom: 0.5rem;
+                border: 1px solid transparent;
+            }
+
+            .risk-pill.high {
+                color: #7f1d1d;
+                background: rgba(239,68,68,0.16);
+                border-color: rgba(220,38,38,0.28);
+            }
+
+            .risk-pill.low {
+                color: #064e3b;
+                background: rgba(16,185,129,0.17);
+                border-color: rgba(5,150,105,0.3);
+            }
+
+            .result-main {
+                color: var(--ink);
+                font-size: 1.45rem;
+                font-weight: 800;
                 margin: 0;
-                color: var(--text);
-                font-size: 1.7rem;
-                letter-spacing: -0.01em;
             }
-            .hero p {
-                margin: 0.4rem 0 0 0;
+
+            .result-sub {
                 color: var(--muted);
+                margin: 0.28rem 0 0 0;
                 font-size: 0.95rem;
             }
-            .section-card {
-                border: 1px solid var(--line);
-                border-radius: 16px;
-                padding: 0.8rem 0.9rem 0.4rem 0.9rem;
-                background: var(--card);
-                box-shadow: 0 8px 24px rgba(2, 8, 23, 0.05);
-                transition: transform 160ms ease, box-shadow 160ms ease;
-            }
-            .section-card:hover {
-                transform: translateY(-1px);
-                box-shadow: 0 12px 28px rgba(2, 8, 23, 0.08);
-            }
-            .result-card {
-                border: 1px solid var(--line);
-                border-radius: 16px;
-                padding: 1rem 1rem 0.9rem 1rem;
-                margin-top: 0.8rem;
-                background: var(--card);
-                box-shadow: 0 10px 28px rgba(2, 8, 23, 0.06);
-            }
-            .risk-high {
-                color: var(--warn);
-                font-size: 1.25rem;
-                font-weight: 700;
-            }
-            .risk-low {
-                color: var(--ok);
-                font-size: 1.25rem;
-                font-weight: 700;
-            }
-            .caption {
-                color: var(--muted);
-                font-size: 0.9rem;
-                margin-top: 0.2rem;
-            }
-            div[data-testid="stSidebar"] {
-                border-right: 1px solid var(--line);
-            }
-            .stButton > button[kind="primary"] {
-                border-radius: 12px;
-                border: none;
-                background: linear-gradient(135deg, var(--accent), var(--accent2));
-                color: white;
-                font-weight: 600;
-                min-height: 2.8rem;
-            }
+
             .stButton > button {
-                border-radius: 10px;
+                border-radius: 12px;
+                min-height: 2.8rem;
+                font-weight: 650;
+                transition: transform 130ms ease, box-shadow 130ms ease;
             }
-            @media (max-width: 900px) {
-                .hero h1 { font-size: 1.35rem; }
+
+            .stButton > button:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 8px 18px rgba(2, 132, 199, 0.24);
+            }
+
+            .stButton > button[kind="primary"] {
+                background: linear-gradient(130deg, var(--blue), var(--teal));
+                border: 0;
+                color: white;
+            }
+
+            [data-testid="stSidebar"] {
+                border-right: 1px solid var(--line);
+                background: linear-gradient(180deg, #0f172a, #111827);
+            }
+
+            [data-testid="stSidebar"] h1,
+            [data-testid="stSidebar"] h2,
+            [data-testid="stSidebar"] h3,
+            [data-testid="stSidebar"] p,
+            [data-testid="stSidebar"] span,
+            [data-testid="stSidebar"] label,
+            [data-testid="stSidebar"] li,
+            [data-testid="stSidebar"] div {
+                color: #e5e7eb;
+            }
+
+            [data-testid="stSidebar"] .stAlert {
+                background: rgba(22, 163, 74, 0.22);
+                color: #d1fae5;
+                border: 1px solid rgba(34,197,94,0.36);
+            }
+
+            [data-testid="stNumberInput"] input,
+            [data-testid="stTextInput"] input,
+            [data-baseweb="select"] > div {
+                background: rgba(255, 255, 255, 0.94) !important;
+                color: #0b1220 !important;
+                border: 1px solid rgba(13, 21, 37, 0.16) !important;
+            }
+
+            [data-testid="stNumberInput"] label p,
+            [data-testid="stSelectbox"] label p,
+            [data-testid="stSlider"] label p,
+            .stMarkdown p,
+            .stMarkdown li {
+                color: #0b1220;
+            }
+
+            @media (max-width: 980px) {
+                .hero-title { font-size: 1.45rem; }
+                .mini-grid { grid-template-columns: repeat(1, minmax(0, 1fr)); }
             }
         </style>
+        <div class="orb one"></div>
+        <div class="orb two"></div>
         """,
         unsafe_allow_html=True,
     )
 
 
 @st.cache_resource(show_spinner=False)
-def load_pipeline(model_path: Path):
-    payload = joblib.load(model_path)
-
+def load_pipeline(path: Path):
+    payload = joblib.load(path)
     if isinstance(payload, dict) and "model" in payload:
         model = payload["model"]
-        features = payload.get("features") or FEATURES_FALLBACK
+        feature_order = payload.get("features") or FALLBACK_FEATURES
     else:
         model = payload
-        features = list(getattr(model, "feature_names_in_", FEATURES_FALLBACK))
-
-    return model, features
+        feature_order = list(getattr(model, "feature_names_in_", FALLBACK_FEATURES))
+    return model, feature_order
 
 
 @st.cache_data(show_spinner=False)
-def load_reference_stats(data_path: Path):
-    if not data_path.exists():
+def load_data_profile(path: Path):
+    if not path.exists():
         return {}
-    df = pd.read_csv(data_path)
-    stats = {}
-    for feature in df.columns:
-        if feature == "target":
+    df = pd.read_csv(path)
+    profile = {}
+    for col in df.columns:
+        if col == "target":
             continue
-        series = df[feature]
-        if pd.api.types.is_numeric_dtype(series):
-            stats[feature] = {
-                "median": float(series.median()),
-                "min": float(series.min()),
-                "max": float(series.max()),
-            }
-    return stats
+        profile[col] = {
+            "median": float(df[col].median()) if pd.api.types.is_numeric_dtype(df[col]) else 0,
+            "min": float(df[col].min()) if pd.api.types.is_numeric_dtype(df[col]) else 0,
+            "max": float(df[col].max()) if pd.api.types.is_numeric_dtype(df[col]) else 1,
+        }
+    return profile
 
 
-def build_default_values(feature_order, stats):
-    defaults = {}
-    for feature in feature_order:
-        meta = FEATURE_META.get(feature, {"kind": "float", "min": 0.0, "max": 1.0, "step": 0.1, "label": feature})
-        if meta["kind"] == "cat":
-            defaults[feature] = meta["options"][0]
-        else:
-            median = stats.get(feature, {}).get("median")
-            if median is None:
-                median = (meta.get("min", 0) + meta.get("max", 1)) / 2
-            if meta["kind"] == "int":
-                defaults[feature] = int(round(median))
-            else:
-                defaults[feature] = float(round(median, 1))
-    return defaults
+def defaults_from_profile(profile: dict) -> dict:
+    def v(name: str, fallback: float):
+        return profile.get(name, {}).get("median", fallback)
+
+    return {
+        "ca": int(round(v("ca", 0))),
+        "cp": int(round(v("cp", 1))),
+        "exang": int(round(v("exang", 0))),
+        "thalach": int(round(v("thalach", 150))),
+        "oldpeak": float(round(v("oldpeak", 1.0), 1)),
+        "thal": int(round(v("thal", 2))),
+        "slope": int(round(v("slope", 1))),
+        "sex": int(round(v("sex", 1))),
+        "age": int(round(v("age", 55))),
+        "restecg": int(round(v("restecg", 1))),
+        "chol": int(round(v("chol", 240))),
+    }
 
 
-def validate_inputs(values):
+def validate(values: dict) -> list[str]:
     issues = []
-
-    age = values.get("age")
-    chol = values.get("chol")
-    oldpeak = values.get("oldpeak")
-    thalach = values.get("thalach")
-
-    if age is not None and not (18 <= age <= 100):
-        issues.append("Age should be between 18 and 100.")
-    if chol is not None and not (100 <= chol <= 600):
-        issues.append("Cholesterol should be between 100 and 600 mg/dl.")
-    if oldpeak is not None and not (0 <= oldpeak <= 8):
-        issues.append("Oldpeak should be between 0.0 and 8.0.")
-    if thalach is not None and not (60 <= thalach <= 230):
-        issues.append("Max heart rate should be between 60 and 230.")
-
+    if not 18 <= values["age"] <= 100:
+        issues.append("Age should be between 18 and 100")
+    if not 100 <= values["chol"] <= 600:
+        issues.append("Cholesterol should be between 100 and 600")
+    if not 60 <= values["thalach"] <= 230:
+        issues.append("Max heart rate should be between 60 and 230")
+    if not 0.0 <= values["oldpeak"] <= 8.0:
+        issues.append("Oldpeak should be between 0.0 and 8.0")
     return issues
 
 
-def prepare_input_frame(values, feature_order):
-    row = {feature: values[feature] for feature in feature_order}
+def build_input_frame(values: dict, feature_order: list[str]) -> pd.DataFrame:
+    row = {k: values[k] for k in feature_order}
     return pd.DataFrame([row], columns=feature_order)
 
 
-def predict(model, input_df):
-    pred = int(model.predict(input_df)[0])
-
+def infer(model, frame: pd.DataFrame):
+    pred = int(model.predict(frame)[0])
     confidence = None
     prob_pos = None
     if hasattr(model, "predict_proba"):
-        proba = model.predict_proba(input_df)[0]
+        proba = model.predict_proba(frame)[0]
         prob_pos = float(proba[1])
         confidence = float(proba[pred])
-
     return pred, confidence, prob_pos
 
 
-def render_result(pred, confidence, prob_pos):
-    label = "High Risk" if pred == 1 else "Low Risk"
-    risk_class = "risk-high" if pred == 1 else "risk-low"
+def show_result(pred: int, confidence: float | None, prob_pos: float | None):
+    is_high = pred == 1
+    pill_class = "high" if is_high else "low"
+    status = "High Risk" if is_high else "Low Risk"
 
-    st.markdown("<div class='result-card'>", unsafe_allow_html=True)
-    st.markdown(f"<div class='{risk_class}'>{label}</div>", unsafe_allow_html=True)
+    st.markdown("<div class='result-wrap'>", unsafe_allow_html=True)
+    st.markdown(f"<span class='risk-pill {pill_class}'>{status}</span>", unsafe_allow_html=True)
+    st.markdown(f"<p class='result-main'>{'Heart disease likely' if is_high else 'Heart disease unlikely'}</p>", unsafe_allow_html=True)
 
     if confidence is not None:
-        st.markdown(f"<div class='caption'>Confidence: {confidence * 100:.1f}%</div>", unsafe_allow_html=True)
+        st.markdown(f"<p class='result-sub'>Model confidence: {confidence * 100:.1f}%</p>", unsafe_allow_html=True)
     else:
-        st.markdown("<div class='caption'>Confidence score unavailable for this model type.</div>", unsafe_allow_html=True)
+        st.markdown("<p class='result-sub'>Confidence unavailable for this model.</p>", unsafe_allow_html=True)
 
     if prob_pos is not None:
-        st.write("Risk probability")
-        st.progress(min(max(prob_pos, 0.0), 1.0))
-        st.caption(f"Probability of heart disease: {prob_pos * 100:.1f}%")
+        st.progress(max(0.0, min(1.0, prob_pos)))
+        st.caption(f"Predicted probability of heart disease: {prob_pos * 100:.1f}%")
 
     st.markdown("</div>", unsafe_allow_html=True)
 
@@ -259,120 +376,101 @@ inject_styles()
 
 st.markdown(
     """
-    <div class="hero">
-        <h1>Heart Disease Risk Prediction</h1>
-        <p>Fast clinical-style screening interface powered by a trained machine learning pipeline.</p>
+    <div class="hero-card">
+        <h1 class="hero-title">PulseGuard Heart Risk</h1>
+        <p class="hero-sub">Responsive clinical risk check with a trained machine learning pipeline.</p>
+        <div class="mini-grid">
+            <div class="mini-card">
+                <h4>Latency First</h4>
+                <p>Cached model loading and single-pass prediction.</p>
+            </div>
+            <div class="mini-card">
+                <h4>Clean Input Flow</h4>
+                <p>Hardcoded medical controls with strict validation.</p>
+            </div>
+            <div class="mini-card">
+                <h4>Deployment Ready</h4>
+                <p>Uses saved pipeline artifact directly.</p>
+            </div>
+        </div>
     </div>
     """,
     unsafe_allow_html=True,
 )
 
 with st.sidebar:
-    st.subheader("About")
-    st.caption("Model-backed prediction app for heart disease risk assessment.")
-
-    if MODEL_PATH.exists():
-        st.success("Model file detected")
-    else:
-        st.error("Model file missing")
-
-    st.markdown("Feature coding")
-    st.caption("sex: 0 Female, 1 Male")
-    st.caption("exang: 0 No, 1 Yes")
+    st.header("About")
+    st.caption("Premium UI for heart risk prediction")
+    st.caption("Sex: 0 Female, 1 Male")
+    st.caption("Exang: 0 No, 1 Yes")
     st.caption("cp: 0-3, thal: 0-3, slope: 0-2, restecg: 0-2")
 
-
 if not MODEL_PATH.exists():
-    st.error("Model file heart_disease_pipeline.pkl was not found in the app directory.")
+    st.error("Model file not found. Place heart_disease_pipeline.pkl in this folder.")
     st.stop()
 
 model, feature_order = load_pipeline(MODEL_PATH)
-reference_stats = load_reference_stats(DATA_PATH)
-defaults = build_default_values(feature_order, reference_stats)
+profile = load_data_profile(DATA_PATH)
+defaults = defaults_from_profile(profile)
 
-if "input_values" not in st.session_state:
-    st.session_state.input_values = defaults.copy()
-
-if "last_result" not in st.session_state:
-    st.session_state.last_result = None
+if "form_values" not in st.session_state:
+    st.session_state.form_values = defaults.copy()
+if "result" not in st.session_state:
+    st.session_state.result = None
 
 with st.sidebar:
-    if st.button("Reset Inputs", use_container_width=True):
-        st.session_state.input_values = defaults.copy()
-        st.session_state.last_result = None
+    st.success("Model ready")
+    if st.button("Reset form", use_container_width=True):
+        st.session_state.form_values = defaults.copy()
+        st.session_state.result = None
         st.rerun()
 
-st.markdown("<div class='section-card'>", unsafe_allow_html=True)
-st.subheader("Patient Inputs")
+st.markdown("<div class='panel-card'>", unsafe_allow_html=True)
+st.markdown("<h2 class='panel-head'>Patient inputs</h2>", unsafe_allow_html=True)
 
-left_col, right_col = st.columns(2, gap="large")
-current_values = st.session_state.input_values.copy()
+left, right = st.columns(2, gap="large")
+vals = st.session_state.form_values.copy()
 
-for idx, feature in enumerate(feature_order):
-    meta = FEATURE_META.get(feature, {"label": feature, "kind": "float", "min": 0.0, "max": 1.0, "step": 0.1, "help": ""})
-    label = meta["label"]
-    widget_key = f"input_{feature}"
+with left:
+    vals["ca"] = st.selectbox("Major vessels (ca)", [0, 1, 2, 3, 4], index=[0, 1, 2, 3, 4].index(int(vals["ca"])) if int(vals["ca"]) in [0, 1, 2, 3, 4] else 0)
+    vals["exang"] = st.selectbox("Exercise induced angina", [0, 1], index=int(vals["exang"]) if int(vals["exang"]) in [0, 1] else 0)
+    vals["oldpeak"] = st.number_input("ST depression (oldpeak)", min_value=0.0, max_value=8.0, value=float(vals["oldpeak"]), step=0.1)
+    vals["slope"] = st.selectbox("Slope", [0, 1, 2], index=int(vals["slope"]) if int(vals["slope"]) in [0, 1, 2] else 0)
+    vals["age"] = st.number_input("Age", min_value=18, max_value=100, value=int(vals["age"]), step=1)
+    vals["chol"] = st.number_input("Cholesterol", min_value=100, max_value=600, value=int(vals["chol"]), step=1)
 
-    target_col = left_col if idx % 2 == 0 else right_col
+with right:
+    vals["cp"] = st.selectbox("Chest pain type", [0, 1, 2, 3], index=int(vals["cp"]) if int(vals["cp"]) in [0, 1, 2, 3] else 0)
+    vals["thalach"] = st.number_input("Max heart rate", min_value=60, max_value=230, value=int(vals["thalach"]), step=1)
+    vals["thal"] = st.selectbox("Thal", [0, 1, 2, 3], index=int(vals["thal"]) if int(vals["thal"]) in [0, 1, 2, 3] else 0)
+    vals["sex"] = st.selectbox("Sex", [0, 1], index=int(vals["sex"]) if int(vals["sex"]) in [0, 1] else 0)
+    vals["restecg"] = st.selectbox("Resting ECG", [0, 1, 2], index=int(vals["restecg"]) if int(vals["restecg"]) in [0, 1, 2] else 0)
 
-    with target_col:
-        if meta["kind"] == "cat":
-            options = meta["options"]
-            default_index = options.index(current_values.get(feature, options[0])) if current_values.get(feature, options[0]) in options else 0
-            value = st.selectbox(label, options=options, index=default_index, help=meta.get("help", ""), key=widget_key)
-        elif meta["kind"] == "int":
-            value = st.number_input(
-                label,
-                min_value=int(meta["min"]),
-                max_value=int(meta["max"]),
-                value=int(current_values.get(feature, defaults.get(feature, int(meta["min"])))),
-                step=int(meta["step"]),
-                help=meta.get("help", ""),
-                key=widget_key,
-            )
-        else:
-            value = st.number_input(
-                label,
-                min_value=float(meta["min"]),
-                max_value=float(meta["max"]),
-                value=float(current_values.get(feature, defaults.get(feature, float(meta["min"])))),
-                step=float(meta["step"]),
-                help=meta.get("help", ""),
-                key=widget_key,
-            )
+st.session_state.form_values = vals
+errors = validate(vals)
+if errors:
+    for err in errors:
+        st.warning(err)
 
-        current_values[feature] = value
-
-st.session_state.input_values = current_values
-issues = validate_inputs(current_values)
-if issues:
-    for issue in issues:
-        st.warning(issue)
-
-predict_col, _ = st.columns([1, 2])
-with predict_col:
-    predict_pressed = st.button(
-        "Predict Heart Disease Risk",
-        type="primary",
-        use_container_width=True,
-        disabled=bool(issues),
-    )
+cta_col, _ = st.columns([1, 2.4])
+with cta_col:
+    do_predict = st.button("Predict now", type="primary", use_container_width=True, disabled=bool(errors))
 
 st.markdown("</div>", unsafe_allow_html=True)
 
-if predict_pressed and not issues:
-    input_df = prepare_input_frame(st.session_state.input_values, feature_order)
-    with st.spinner("Running prediction..."):
-        pred, confidence, prob_pos = predict(model, input_df)
-    st.session_state.last_result = {
+if do_predict and not errors:
+    frame = build_input_frame(vals, feature_order)
+    with st.spinner("Scoring patient..."):
+        pred, confidence, prob_pos = infer(model, frame)
+    st.session_state.result = {
         "pred": pred,
         "confidence": confidence,
         "prob_pos": prob_pos,
     }
 
-if st.session_state.last_result is not None:
-    result = st.session_state.last_result
-    render_result(result["pred"], result["confidence"], result["prob_pos"])
+if st.session_state.result is not None:
+    r = st.session_state.result
+    show_result(r["pred"], r["confidence"], r["prob_pos"])
 
-    with st.expander("Input snapshot", expanded=False):
-        st.dataframe(pd.DataFrame([st.session_state.input_values]), use_container_width=True)
+    with st.expander("Submitted values", expanded=False):
+        st.dataframe(pd.DataFrame([vals]), use_container_width=True)
