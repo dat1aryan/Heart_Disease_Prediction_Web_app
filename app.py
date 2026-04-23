@@ -800,7 +800,7 @@ def render_home(model, feature_order: List[str], defaults: Dict) -> None:
 
     with form_col:
         st.markdown(
-            f'<div class="form-title form-title-marker">{icon_svg("user", 18, "currentColor")} Patient Information</div>',
+            f'<div class="form-title form-title-marker">{icon_svg("user", 18, "var(--red)")} Patient Information</div>',
             unsafe_allow_html=True,
         )
 
