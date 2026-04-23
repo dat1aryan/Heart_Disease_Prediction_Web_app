@@ -697,7 +697,7 @@ def render_sidebar() -> str:
         )
 
         st.markdown(
-            """
+            f"""
             <div class="sidebar-card">
                                 <div style="text-align: center; margin-bottom: 12px; position: relative; display: flex; justify-content: center; align-items: center; height: 80px;">
                     <div style="position: relative; width: 48px; height: 48px;">
@@ -725,7 +725,7 @@ def render_sidebar() -> str:
 
 def render_hero() -> None:
     st.markdown(
-        """
+        f"""
         <div class="card page-section">
             <div class="hero-grid">
                 <div>
