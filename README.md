@@ -8,6 +8,8 @@
 ![NumPy](https://img.shields.io/badge/numpy-%23013243.svg?style=for-the-badge&logo=numpy&logoColor=white)
 ![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg?style=for-the-badge)
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Streamlit-FF4B4B?style=for-the-badge&logo=Streamlit&logoColor=white)](https://heartdiseaseprediction-webapp.streamlit.app/)
+
 ## Overview
 HeartPulse is a high-performance machine learning web application designed to predict the risk of heart disease based on clinical patient data. By leveraging advanced classification algorithms, it translates complex medical metrics into clear, actionable risk assessments, aiding in early health awareness and proactive consultation.
 
