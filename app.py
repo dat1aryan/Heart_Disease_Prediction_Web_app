@@ -876,7 +876,8 @@ def render_home(model, feature_order: List[str], defaults: Dict) -> None:
             confidence = result["confidence"] if result["confidence"] is not None else 0.78
 
         is_high = pred == 1
-        status_text = "⚠️<br/>High Risk" if is_high else "✅<br/>Low Risk"
+        warn_icon = icon_svg("alert-triangle", 22, "#e63946")
+        status_text = f"{warn_icon}<br/>High Risk" if is_high else "✅<br/>Low Risk"
         risk_value = max(0.0, min(1.0, prob_pos if prob_pos is not None else confidence))
 
         st.markdown(
@@ -904,8 +905,9 @@ def render_home(model, feature_order: List[str], defaults: Dict) -> None:
             unsafe_allow_html=True,
         )
 
+        alert_icon = icon_svg("alert-triangle", 16, "#e63946")
         alert_copy = (
-            "⚠️ You are at high risk of heart disease. Please consult a cardiologist and maintain a healthy lifestyle."
+            f"{alert_icon} You are at high risk of heart disease. Please consult a cardiologist and maintain a healthy lifestyle."
             if is_high
             else "✅ Low risk detected. Continue healthy routines and regular health checkups."
         )
