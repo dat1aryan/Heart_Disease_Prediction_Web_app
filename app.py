@@ -42,6 +42,10 @@ ICON_PATHS = {
     "trending-up": '<polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>',
     "zap": '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
     "layers": '<polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 12 12 17 22 12"/><polyline points="2 17 12 22 22 17"/>',
+    "running": '<path d="m11 20 3-8 3 2v4"/><path d="m5 16 4-4 2 1"/><path d="m13 12 3-5-2-3"/><path d="m9 7 2-3h3"/><circle cx="16" cy="4" r="2"/>',
+    "circle": '<circle cx="12" cy="12" r="10"/>',
+    "shield-check": '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>',
+    "pill": '<path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/>',
 }
 
 
@@ -873,15 +877,16 @@ def render_home(model, feature_order: List[str], defaults: Dict) -> None:
             f'<div class="tip-title">{icon_svg("activity", 16, "currentColor")} What You Can Do</div>',
             unsafe_allow_html=True,
         )
-        for item in [
-            "Eat a heart-healthy diet",
-            "Exercise regularly",
-            "Manage stress",
-            "Get regular checkups",
-            "Avoid smoking & alcohol",
-        ]:
+        tips = [
+            ("Eat a heart-healthy diet", "heart"),
+            ("Exercise regularly", "running"),
+            ("Manage stress", "circle"),
+            ("Get regular checkups", "shield-check"),
+            ("Avoid smoking & alcohol", "pill"),
+        ]
+        for item, icon in tips:
             st.markdown(
-                f'<div class="tip-item"><span class="tip-left">{icon_svg("heart", 16, "#e63946")}<span>{item}</span></span><span class="icon-muted">{icon_svg("chevron-right", 16, "currentColor")}</span></div>',
+                f'<div class="tip-item"><span class="tip-left">{icon_svg(icon, 16, "#e63946")}<span>{item}</span></span><span class="icon-muted">{icon_svg("chevron-right", 16, "currentColor")}</span></div>',
                 unsafe_allow_html=True,
             )
 
