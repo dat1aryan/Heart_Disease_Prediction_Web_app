@@ -227,10 +227,11 @@ html, body, [data-testid="stAppViewContainer"], .stApp {
     margin-bottom: 24px;
 }
 
-/* Target the main content blocks to render as cards */
-[data-testid="column"] > div > [data-testid="stVerticalBlock"]:has(.form-title),
-[data-testid="column"] > div > [data-testid="stVerticalBlock"]:has(.result-title),
-.card {
+/* Robust Card Targeting Engine */
+[data-testid="column"]:has(.form-title-marker),
+[data-testid="column"]:has(.result-title-marker),
+.stColumn:has(.form-title-marker),
+.stColumn:has(.result-title-marker) {
     background: var(--surface) !important;
     border: 1px solid var(--line) !important;
     border-radius: 16px !important;
@@ -239,8 +240,9 @@ html, body, [data-testid="stAppViewContainer"], .stApp {
     margin-bottom: 24px !important;
 }
 
-/* Prediction specific polish */
-[data-testid="column"] > div > [data-testid="stVerticalBlock"]:has(.result-title) {
+/* Red accent bar for the result card */
+[data-testid="column"]:has(.result-title-marker),
+.stColumn:has(.result-title-marker) {
     border-top: 4px solid var(--red) !important;
 }
 
@@ -798,7 +800,7 @@ def render_home(model, feature_order: List[str], defaults: Dict) -> None:
 
     with form_col:
         st.markdown(
-            f'<div class="form-title">{icon_svg("user", 18, "currentColor")} Patient Information</div>',
+            f'<div class="form-title form-title-marker">{icon_svg("user", 18, "currentColor")} Patient Information</div>',
             unsafe_allow_html=True,
         )
 
@@ -878,7 +880,7 @@ def render_home(model, feature_order: List[str], defaults: Dict) -> None:
         risk_value = max(0.0, min(1.0, prob_pos if prob_pos is not None else confidence))
 
         st.markdown(
-            f'<div class="result-title">{icon_svg("home", 18, "var(--red)")} Prediction Result</div>',
+            f'<div class="result-title result-title-marker">{icon_svg("home", 18, "var(--red)")} Prediction Result</div>',
             unsafe_allow_html=True,
         )
 
