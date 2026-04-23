@@ -876,8 +876,9 @@ def render_home(model, feature_order: List[str], defaults: Dict) -> None:
             confidence = result["confidence"] if result["confidence"] is not None else 0.78
 
         is_high = pred == 1
-        warn_icon = icon_svg("alert-triangle", 22, "#e63946")
-        status_text = f"{warn_icon}<br/>High Risk" if is_high else "✅<br/>Low Risk"
+        warn_span = '<span style="display:inline-block;width:22px;height:22px;background:#e63946;-webkit-mask:url(\"data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Cpath d=\'M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z\'/%3E%3Cline x1=\'12\' y1=\'9\' x2=\'12\' y2=\'13\'/%3E%3Cline x1=\'12\' y1=\'17\' x2=\'12.01\' y2=\'17\'/%3E%3C/svg%3E\") no-repeat center/contain;mask:url(\"data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Cpath d=\'M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z\'/%3E%3Cline x1=\'12\' y1=\'9\' x2=\'12\' y2=\'13\'/%3E%3Cline x1=\'12\' y1=\'17\' x2=\'12.01\' y2=\'17\'/%3E%3C/svg%3E\") no-repeat center/contain;"></span>'
+        warn_span_sm = '<span style="display:inline-block;width:16px;height:16px;vertical-align:-2px;background:#e63946;-webkit-mask:url(\"data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Cpath d=\'M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z\'/%3E%3Cline x1=\'12\' y1=\'9\' x2=\'12\' y2=\'13\'/%3E%3Cline x1=\'12\' y1=\'17\' x2=\'12.01\' y2=\'17\'/%3E%3C/svg%3E\") no-repeat center/contain;mask:url(\"data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Cpath d=\'M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z\'/%3E%3Cline x1=\'12\' y1=\'9\' x2=\'12\' y2=\'13\'/%3E%3Cline x1=\'12\' y1=\'17\' x2=\'12.01\' y2=\'17\'/%3E%3C/svg%3E\") no-repeat center/contain;"></span>'
+        status_text = f"{warn_span}<br/>High Risk" if is_high else "✅<br/>Low Risk"
         risk_value = max(0.0, min(1.0, prob_pos if prob_pos is not None else confidence))
 
         st.markdown(
@@ -905,9 +906,8 @@ def render_home(model, feature_order: List[str], defaults: Dict) -> None:
             unsafe_allow_html=True,
         )
 
-        alert_icon = icon_svg("alert-triangle", 16, "#e63946")
         alert_copy = (
-            f"{alert_icon} You are at high risk of heart disease. Please consult a cardiologist and maintain a healthy lifestyle."
+            f"{warn_span_sm} You are at high risk of heart disease. Please consult a cardiologist and maintain a healthy lifestyle."
             if is_high
             else "✅ Low risk detected. Continue healthy routines and regular health checkups."
         )
