@@ -227,7 +227,9 @@ html, body, [data-testid="stAppViewContainer"], .stApp {
     margin-bottom: 24px;
 }
 
-.card {
+.card,
+[data-testid="column"]:has(.form-title),
+[data-testid="column"]:has(.result-title) {
     background: var(--surface);
     border: 1px solid var(--line);
     border-radius: 16px;
