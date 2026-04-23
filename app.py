@@ -728,7 +728,7 @@ def render_hero() -> None:
                     <div class="hero-subtitle">AI-Powered Heart Disease Risk Prediction</div>
                     <div class="hero-copy">Get insights about your heart health based on clinical factors using advanced machine learning.</div>
                 </div>
-                                <div class="hero-heart" style="position: relative; display: flex; justify-content: center; align-items: center; min-height: 240px;">
+                <div class="hero-heart" style="position: relative; display: flex; justify-content: center; align-items: center; min-height: 240px;">
                     <!-- Pale pink fading aura background -->
                     <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 140%; height: 140%; background: radial-gradient(ellipse, #ffe0e4 0%, rgba(255,255,255,0) 65%); z-index: 0; pointer-events: none;"></div>
                     
