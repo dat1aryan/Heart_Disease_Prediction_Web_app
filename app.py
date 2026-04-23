@@ -842,9 +842,9 @@ def render_home(model, feature_order: List[str], defaults: Dict) -> None:
 
         btn_left, btn_right = st.columns(2, gap="medium")
         with btn_left:
-            predict_clicked = st.button("Predict Risk", type="primary", use_container_width=True, disabled=bool(errors))
+            predict_clicked = st.button("🔍 Predict Risk", type="primary", use_container_width=True, disabled=bool(errors))
         with btn_right:
-            if st.button("Reset All", use_container_width=True):
+            if st.button("🔄 Reset All", use_container_width=True):
                 st.session_state.form_values = defaults.copy()
                 st.session_state.result = None
                 st.rerun()
