@@ -100,21 +100,6 @@ CUSTOM_CSS = """
     --shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
 }
 
-/* Override Streamlit progress bar: fill = red, track = white */
-.stProgress > div > div > div,
-.stProgress div[role="progressbar"] > div,
-[data-testid="stProgress"] div[role="progressbar"] > div,
-[data-testid="stProgressBar"] > div {
-    background-color: #e63946 !important;
-    background-image: linear-gradient(90deg, #ff6b76, #e63946) !important;
-}
-.stProgress > div > div,
-.stProgress div[role="progressbar"],
-[data-testid="stProgress"] div[role="progressbar"],
-[data-testid="stProgressBar"] {
-    background-color: #ffffff !important;
-}
-
 @keyframes pulseHeart {
     0% { transform: scale(0.98); opacity: 0.85; filter: drop-shadow(0 10px 20px rgba(230,57,70,0.2)); }
     50% { transform: scale(1.02); opacity: 1; filter: drop-shadow(0 20px 40px rgba(230,57,70,0.5)); }
