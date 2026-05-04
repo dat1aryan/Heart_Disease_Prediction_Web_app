@@ -20,7 +20,7 @@ HeartPulse is a high-performance machine learning web application designed to pr
 - **Secure & Lightweight**: Serverless deployment architecture with optimized resource footprint.
 
 ## UI Preview
-![App Screenshot](assets/hero_heart.png)
+![App Screenshot](assets/HeartPulse_demo.png)
 
 ## Tech Stack
 - **Languages**: Python
